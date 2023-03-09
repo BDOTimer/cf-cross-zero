@@ -24,6 +24,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="ai_cpp_dll/code/common.h" />
 		<Unit filename="code/main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

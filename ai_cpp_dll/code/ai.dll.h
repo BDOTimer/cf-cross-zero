@@ -1,3 +1,6 @@
+#ifndef AI_DLL_H
+#define AI_DLL_H
+
 ///----------------------------------------------------------------------------|
 /// ИИ.
 ///     Всё что нужно сделать это ПРИНЯТЬ РЕШЕНИЕ,
@@ -10,17 +13,39 @@
 const wchar_t* name = L"АфторРэнд";
 
 struct  AI
-{
+{       AI()
+        {
+        }
 
-    ///------------|
-    /// Ваша фишка.|
-    ///------------:
-    char     FISHKA = 'Y';
+    ///---------------------|
+    /// Конфиг игры.        |
+    ///---------------------:
+    /// Cfg* pcfg; /// Глобально.
 
-    Plot step(const Field& field) const
+    ///---------------------|
+    /// Ваша фишка.         |
+    ///---------------------:
+    char FISHKA       = 0; /// Устанавливается Арбитром
+    char FISHKA_ENEMY = 0; /// непосредственно перед матчем.
+
+    ///---------------------|
+    /// Послединй ход врага.|
+    ///---------------------:
+    Plot last_step{mss::START_STEP};
+
+    ///---------------------|
+    /// Это ваше поле.      |
+    ///---------------------:
+    Field field;
+
+    ///-------------------------------|
+    /// Это основной метод.           |
+    /// его будет дёргать Арбитер,    |
+    /// чтоб узнать ваше решение.     |
+    ///-------------------------------:
+    Plot step(const Plot& enemy_step)
     {
-        //l(FISHKA)
-        //std::cin.get();
+        set_step(enemy_step);
 
         /// TODO ...
         ///--------------------...
@@ -32,7 +57,10 @@ struct  AI
                  p.x = rrand(0, field.W);
                  p.y = rrand(0, field.H);
 
-            if(field.verification(p)) return p;
+            if( field.verification_no_info(p))
+            {   field[p.y][p.x] = FISHKA;
+                return p;
+            }
         }
 
         return {size_t(-1), 0};
@@ -52,4 +80,26 @@ struct  AI
         }       std::cout << '\n';
     }
     */
+
+private:
+    void set_step(const Plot& enemy_step)
+    {   last_step = enemy_step;
+
+        if (field.verification(last_step, name))
+        {   field[last_step.y][last_step.x] = FISHKA_ENEMY;
+        }
+        else
+        {
+            ///------------------------|
+            /// Арбитер прислал НЕ ход.|
+            ///------------------------:
+            if(last_step == mss::START_STEP)
+            {   //wprintf(L"%s %s", name, L"ходит первым.");
+                std::wcout << name << L"ходит первым.\n" << std::endl;
+            }
+            else printf("ERROR in dll ...");
+        }
+    }
 };
+#endif // AI_DLL_H
+

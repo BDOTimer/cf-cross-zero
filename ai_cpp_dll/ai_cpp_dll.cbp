@@ -24,6 +24,7 @@
 			</Target>
 		</Build>
 		<Unit filename="code/ai.dll.h" />
+		<Unit filename="code/common.h" />
 		<Unit filename="code/main.dll.cpp" />
 		<Extensions />
 	</Project>

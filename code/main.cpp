@@ -1,41 +1,21 @@
+///----------------------------------------------------------------------------|
 /// https://www.cyberforum.ru/cpp-beginners/thread3086648.html
 /// Крестики-нолики(с любым размером поля!)
 /// C++17
 /// Исходник в UTF-8
+///----------------------------------------------------------------------------|
 #include <iostream>
 #include <string>
 #include <vector>
 #include <map>
 
-#pragma pack(push, 1)
-
-#define  l(v)  std::wcout << #v << L" : " << v << std::endl;
+#include "../ai_cpp_dll/code/common.h"
 
 #include <chrono>
 #include <thread>
 inline void sleep(size_t ms)
 {   std::this_thread::sleep_for(std::chrono::milliseconds(ms) );
 }
-
-///----------|
-/// Конфиг.  |
-///----------:
-struct  Cfg
-{
-    ///-----------------------------|
-    /// Количество фишек для победы.|
-    ///-----------------------------:
-    size_t FWIN   =  5;
-    size_t WIDTH  = 10; /// Размер поля по горизонтали.
-    size_t HEIGHT =  5; /// Размер поля по вертикали.
-    ///-----------------------------.
-
-    char FISHKI[2]{'X', 'O'};
-
-};
-
-Cfg cfg;
-
 
 ///---------------------------|
 /// Системное.                |
@@ -47,209 +27,7 @@ struct  Sys
 }sys;
 
 
-struct Plot
-{   size_t x, y;
-};
-
-std::wostream& operator<<(std::wostream& o, const Plot p)
-{   o << "{ " << p.x << ", " << p.y << " }";
-    return o;
-}
-
-
-///----------------------------------------------------------------------------|
-/// Поле.
-///----------------------------------------------------------------------------:
-struct  Field
-{   Field() : m(nullptr)
-    {   create();
-        clear ();
-    }
-
-    const char EMPTY = '.';
-
-    size_t W = cfg.WIDTH ,
-           H = cfg.HEIGHT;
-
-    ///---------------------------|
-    /// Проверка фишки на выигрыш.|
-    ///---------------------------:
-    bool is_win(const char FISHKA) const
-    {   std::string fishka(cfg.FWIN, FISHKA);
-
-        for(const auto& str : get_all_str())
-        {   if(str.find(fishka) != str.npos) return true;
-        }
-        return false;
-    }
-
-    ///---------------------------|
-    /// Есть ли ходы?             |
-    ///---------------------------:
-    bool is_step() const
-    {   for    (size_t h = 0; h < H; ++h)
-        {   for(size_t w = 0; w < W; ++w)
-            {   if(m[h][w] == EMPTY) return true;
-            }
-        }
-        return false;
-    }
-
-    char* operator[](const size_t i)
-    {   return  m[i];
-    }
-
-    void clear()
-    {   for    (size_t h = 0; h < H; ++h)
-        {   for(size_t w = 0; w < W; ++w)
-            {   m[h][w] = EMPTY;
-            }
-        }
-    }
-
-    void fill_for_test()
-    {   char cnt = 'A';
-        for    (size_t h = 0; h < H; ++h)
-        {   for(size_t w = 0; w < W; ++w)
-            {   m[h][w] = cnt++;
-            }
-        }
-    }
-
-    void debug() const
-    {   size_t cnt = 0;
-        std::wcout << L" ... сначала горизонтали:\n";
-        for(const auto& s : get_all_str())
-        {   if(    H == cnt  ) std::wcout << L" ... теперь вертикали:\n";
-            if(W + H == cnt++) std::wcout << L" ... теперь диагонали:\n";
-
-            std::cout << s << '\n';
-        }
-        std::cout      << '\n';
-    }
-
-    bool verification(const Plot& p)
-    {   return p.x < W && p.y < H && m[p.y][p.x] == EMPTY;
-    }
-
-
-private:
-    char** m;
-
-    void create()
-    {   if(nullptr !=  m)  return;
-
-        m = new char* [H];
-        for (size_t i = 0; i < H; i++)
-        {   m[i] = new char[W];
-        }
-    }
-
-#define TESTMODE false
-    ///---------------------------|
-    /// Разворачиваем строки!     |
-    ///---------------------------:
-    std::vector<std::string> get_all_str() const
-    {   std::vector<std::string> r;
-
-        for    (size_t h = 0; h < H; ++h)
-        {   r.push_back(std::string());
-            for(size_t w = 0; w < W;  ++w)
-            {   r.back().push_back(m[h][w]);
-            }
-        }
-
-        for    (size_t w = 0; w < W;  ++w)
-        {   r.push_back(std::string());
-            for(size_t h = 0; h < H; ++h)
-            {   r.back().push_back(m[h][w]);
-            }
-        }
-
-        ///---------------------------|
-        /// Повернуть на -45 градусов.|
-        ///---------------------------:
-        for    (size_t h = 0; h < H; ++h)
-        {   std::string s;
-            for(size_t w = 0, y = h; w < W && y < H; ++w, ++y)
-            {   s.push_back(m[y][w]);
-            }
-            if(s.size() >= cfg.FWIN || TESTMODE)
-            {   r.push_back(s);
-            }
-        }
-
-        for    (size_t w = 1; w < W; ++w)
-        {   std::string s;
-            for(size_t x = w, h = 0; x < W && h < H; ++x, ++h)
-            {   s.push_back(m[h][x]);
-            }
-            if(s.size() >= cfg.FWIN || TESTMODE)
-            {   r.push_back(s);
-            }
-        }
-
-        ///---------------------------|
-        /// Повернуть на +45 градусов.|
-        ///---------------------------:
-        for    (size_t h = 0; h < H; ++h)
-        {   std::string s;
-            for(size_t w = W - 1, y = h; w < W && y < H; --w, ++y)
-            {   s.push_back(m[y][w]);
-            }
-            if(s.size() >= cfg.FWIN || TESTMODE)
-            {   r.push_back(s);
-            }
-        }
-
-        for    (size_t w = W - 2; w < W; --w)
-        {   std::string s;
-            for(size_t x = w, h = 0; x < W && h < H; --x, ++h)
-            {   s.push_back(m[h][x]);
-            }
-            if(s.size() >= cfg.FWIN || TESTMODE)
-            {   r.push_back(s);
-            }
-        }
-
-        return r;
-    }
-#undef TESTMODE
-
-public:
-    static void testclass();
-};
-
-std::ostream& operator<<(std::ostream& o, Field& f)
-{
-    std::string line(f.W+2, '-');
-    o << line << '\n';
-    for    (size_t h = 0; h < f.H; ++h)
-    {   o << "|";
-        for(size_t w = 0; w < f.W; ++w)
-        {   o << f[h][w];
-        }   o << "|\n";
-    }       o << line << '\n';
-    return  o;
-}
-
-
-/// Тест:
-///------------------------------|
-/// ABC
-/// DEF
-/// GHI
-///------------------------------:
-void Field::testclass()
-{   std::wcout << L"Тест:\n";
-    Field f;
-
-    f.fill_for_test();
-    f.debug        ();
-
-    std::wcout << "TEST FINSHED!\n";
-    std::cin.get();
-}
+const wchar_t* NAME_ARBITER = L"ARBITER";
 
 
 ///----------------------------------------------------------------------------|
@@ -282,9 +60,10 @@ struct  Statistics
 #include <thread>
 #include <future>
 
+
 typedef const wchar_t*(__stdcall * _name_t  )(                        );
-typedef Plot          (__stdcall * _step_t  )(const Field&       field);
-typedef void          (__stdcall * _create_t)(const Cfg* p            );
+typedef Plot          (__stdcall * _step_t  )(const Plot last_step    );
+typedef void          (__stdcall * _create_t)(const Cfg  cfg          );
 typedef void          (__stdcall * _delete_t)(                        );
 typedef void          (__stdcall * _stfish_t)(char FISHKA             );
 
@@ -300,7 +79,7 @@ struct  AI
                  *             << _name() << std::endl;
                  */
 
-                _create(&cfg);
+                _create(cfg);
             }
             catch(int err)
             {   error = true;
@@ -312,7 +91,7 @@ struct  AI
         {   /// TODO: выгрузить DLL.
         }
 
-    Plot stepxxx(const Field& field) const
+    Plot stepxxx(const Plot last_step) const
     {   if(!error)
         {
             ///---------------------------|
@@ -324,7 +103,7 @@ struct  AI
             using result_type = std::pair<Plot, std::chrono::microseconds>;
 {
             std::future<result_type> res = std::async(std::launch::async
-            , [](const Field& f, const AI& ai)
+            , [](const Plot& f, const AI& ai)
             {
                 using namespace std::chrono;
 
@@ -334,7 +113,7 @@ struct  AI
 
                 return std::make_pair(plt, duration_cast<microseconds>(end - beg));
             }
-            , field, *this
+            , last_step, *this
             );
 
             std::future_status status;
@@ -374,9 +153,9 @@ struct  AI
     }
 
 
-    Plot step(const Field& field) const
+    Plot step(const Plot last_step) const
     {   if(!error)
-        {   return _step(field);
+        {   return _step(last_step);
         }
 
         return {size_t(-1), 0};
@@ -447,10 +226,12 @@ void AI::testclass()
     Field f;
     AI   ai("0.dll");
 
-        std::wcout << ai._step(f) << '\n';
-        std::wcout << ai._step(f) << '\n';
-        std::wcout << ai._step(f) << '\n';
-        std::wcout << ai._step(f) << '\n';
+    Plot plt{1, 1};
+
+        std::wcout << ai._step(plt) << '\n';
+        std::wcout << ai._step(plt) << '\n';
+        std::wcout << ai._step(plt) << '\n';
+        std::wcout << ai._step(plt) << '\n';
 
     std::wcout << "\nTEST FINISHED!\n" << std::endl;;
     std::cin.get();
@@ -619,10 +400,10 @@ struct  Player
         std::cin.get();
     }
 
-    Plot step(const Field& field)
+    Plot step(const Plot last_step)
     {   if(ai != nullptr)
         {
-            auto   plot = ai->step(field);
+            auto   plot = ai->step(last_step);
             return plot;
         }
 
@@ -642,7 +423,8 @@ private:
 ///----------------------------------------------------------------------------:
 struct  Game
 {       Game(Player* a_, Player* b_, int Cnt) : a(a_), b(b_), cntg(Cnt)
-        {   loop();
+        {   field.clear();
+            loop       ();
         }
 
     void change_fishki()
@@ -659,7 +441,6 @@ struct  Game
         {   b->ai->_stfish (cfg.FISHKI[0]);
             a->ai->_stfish (cfg.FISHKI[1]);
         }
-
     }
 
     int cnt;
@@ -678,29 +459,30 @@ struct  Game
         ///------------------------------:
         if(a->FISHKA == cfg.FISHKI[1]) std::swap(a, b);
 
+        Plot last_step{mss::START_STEP};
+
         while(field.is_step())
         {
             /// ход игрока а
             {
-                auto p   = a->step(field);
-                bool err = field.verification(p);
+                last_step = a->step(last_step);
+                bool err  = field.verification(last_step, NAME_ARBITER);
                 if (!err)
                 {   /// TODO ...
-                    std::wcout << L"Проблема 1 ...\n" << std::endl;
+                    std::wcout << L"Проблема А ...\n" << std::endl;
                     std::cin.get();
                     break;
                 }
 
-                if(p.x == size_t(-1))
+                if(last_step.x == size_t(-1))
                 {   std::cout << "... p.x == size_t(-1)\n" << std::endl;
                     std::cin.get();
                 }
 
-                field[p.y][p.x] = a->FISHKA;
+                field[last_step.y][last_step.x] = a->FISHKA;
 
                 show();
             }
-
 
             if(field.is_win(a->FISHKA))
             {   b->ai->stat.add_def();
@@ -710,21 +492,21 @@ struct  Game
 
             /// ход игрока b
             {
-                auto p   = b->step(field);
-                bool err = field.verification(p);
+                last_step = b->step(last_step);
+                bool err  = field.verification(last_step, NAME_ARBITER);
                 if (!err)
                 {   /// TODO ...
-                    std::wcout << L"Проблема 2 ...\n" << std::endl;
+                    std::wcout << L"Проблема Б ...\n" << std::endl;
                     std::cin.get();
                     break;
                 }
 
-                if(p.x == size_t(-1))
+                if(last_step.x == size_t(-1))
                 {   std::cout << "... p.x == size_t(-1)\n" << std::endl;
                     std::cin.get();
                 }
 
-                field[p.y][p.x] = b->FISHKA;
+                field[last_step.y][last_step.x] = b->FISHKA;
 
                 show();
             }
@@ -846,7 +628,12 @@ int main()
         Arbiter run;
     }
     catch(const Plot& p)
-    {
-        std::wcout << L"eee..." << std::endl;
+    {   std::wcout << L"eee..." << std::endl;
     }
+    catch(...)
+    {   std::wcout << L"EEE..." << std::endl;
+    }
+
+    std::wcout << "Arbiter FINISHED\n";
+    std::cin.get();
 }
