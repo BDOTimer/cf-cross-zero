@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1678222760 source:e:\!projects2022\cb\cb\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<windows.h>
+
+1678230574 source:e:\!projects2022\cb\cf[cross-zero]\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<windows.h>
+
+1678320514 source:c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<map>
+	<chrono>
+	<thread>
+	<windows.h>
+	<thread>
+	<future>
+	<filesystem>
+
