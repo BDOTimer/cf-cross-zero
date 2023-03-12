@@ -10,6 +10,7 @@
     #define l(v) std::wcout << #v << " = " << (v) << '\n' ;
 #endif // l
 
+#include "configload.h"
 
 ///----------|
 /// Конфиг.  |
@@ -19,7 +20,7 @@ struct  Cfg
     ///-----------------------------|
     /// Количество фишек для победы.|
     ///-----------------------------:
-    size_t FWIN   =  3;
+    size_t FWIN   =  5;
     size_t WIDTH  =  30; /// Размер поля по горизонтали.
     size_t HEIGHT =  20; /// Размер поля по вертикали.
     ///-----------------------------.
@@ -74,13 +75,22 @@ namespace stp
 /// Поле.
 ///----------------------------------------------------------------------------:
 struct  Field   : std::vector<std::string>
-{       Field() : std::vector<std::string>
-                   (cfg.HEIGHT, std::string(cfg.WIDTH, EMPTY)), m(*this)
+{       Field() : m(*this)
         {
+            if(!config_load.get_config(cfg))
+            {   config_load.get_field(cfg, *this);
+            }
+            else
+            {   m = std::vector<std::string>
+                                    (cfg.HEIGHT, std::string(cfg.WIDTH, EMPTY));
+            }
         }
+
+    Config_load config_load;
 
     size_t W = cfg.WIDTH ,
            H = cfg.HEIGHT;
+
 
     void set_FISHKA(const Plot& p, char fishka)
     {   m[p.y][p.x] = fishka;
@@ -110,12 +120,13 @@ struct  Field   : std::vector<std::string>
         return false;
     }
 
-
-    void clear()
-    {   for    (size_t h = 0; h < H; ++h)
-        {   for(size_t w = 0; w < W; ++w)
-            {   m[h][w] = EMPTY;
-            }
+    void fclear()
+    {
+        if(!config_load.error) m = config_load.get_data();
+        else for(size_t h = 0; h < H; ++h)
+        {    for(size_t w = 0; w < W; ++w)
+             {   m[h][w] = EMPTY;
+             }
         }
     }
 
@@ -127,6 +138,8 @@ struct  Field   : std::vector<std::string>
             }
         }
     }
+
+    void operator=(const std::vector<std::string>& _m){ m = _m; }
 
     void debug() const
     {   size_t cnt = 0;

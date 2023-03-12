@@ -23,20 +23,20 @@
 	<future>
 	<filesystem>
 
-1678382060 source:e:\cb-2023\cf[cross-zero]\code\main.cpp
+1678635708 source:e:\cb-2023\cf[cross-zero]\code\main.cpp
 	<iostream>
+	<iomanip>
+	<sstream>
+	<future>
 	<string>
 	<vector>
 	<map>
-	"../ai_cpp_dll/code/common.h"
-	<chrono>
-	<thread>
-	<windows.h>
-	<thread>
-	<future>
-	<filesystem>
+	"file.h"
+	"mylib.h"
+	"arbiter.h"
+	"../ai_cpp_dll/code/ai_xlat.h"
 
-1678382623 e:\cb-2023\cf[cross-zero]\ai_cpp_dll\code\common.h
+1678631997 e:\cb-2023\cf[cross-zero]\ai_cpp_dll\code\common.h
 
 1678555971 source:c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\code\main.cpp
 	<iostream>
@@ -81,4 +81,43 @@
 1678543536 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\code\debug.h
 
 1678558487 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai_xlat.h
+
+1678559135 e:\cb-2023\cf[cross-zero]\code\mylib.h
+	<chrono>
+	<thread>
+	"debug.h"
+
+1678632541 e:\cb-2023\cf[cross-zero]\code\debug.h
+
+1678545261 e:\cb-2023\cf[cross-zero]\code\arbiter.h
+	"dll_maneger.h"
+	"game.h"
+
+1678559243 e:\cb-2023\cf[cross-zero]\code\dll_maneger.h
+	<filesystem>
+	"aishell.h"
+
+1678548112 e:\cb-2023\cf[cross-zero]\code\aishell.h
+	<windows.h>
+	"../ai_cpp_dll/code/common.h"
+	"statistics.h"
+
+1678514418 e:\cb-2023\cf[cross-zero]\code\statistics.h
+
+1678631997 e:\cb-2023\cf[cross-zero]\code\game.h
+	"player.h"
+
+1678540089 e:\cb-2023\cf[cross-zero]\code\player.h
+	"aishell.h"
+
+1678636516 e:\cb-2023\cf[cross-zero]\code\file.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<vector>
+	<string>
+	"debug.h"
+	"../ai_cpp_dll/code/common.h"
+
+1678558487 e:\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai_xlat.h
 

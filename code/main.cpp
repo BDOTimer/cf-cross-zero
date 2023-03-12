@@ -12,6 +12,8 @@
 #include <vector>
 #include <map>
 
+#include "file.h" /// НОВОЕ ...
+
 #pragma pack(push, 1)
 
 const wchar_t* NAME_ARBITER = L"ARBITER";
@@ -63,11 +65,14 @@ Sys sys;
 
 inline void tests()
 {
-  //Field::testclass      ();
-  //AI::testclass         ();
+  //Field      ::testclass();
+  //AI         ::testclass();
   //DLL_manager::testclass();
 
-  //AI_xlat::testclass    ();
+  //AI_xlat     ::testclass();
+
+  //Blacklist  ::testclass();
+  //Config_load::testclass<Cfg, Field>(cfg);
 }
 
 int main()

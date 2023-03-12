@@ -11,7 +11,7 @@
 				<Option working_dir="bin/" />
 				<Option object_output="obj/" />
 				<Option type="1" />
-				<Option compiler="msys_gcc-93" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++17" />
@@ -24,10 +24,12 @@
 		</Compiler>
 		<Unit filename="ai_cpp_dll/code/ai_xlat.h" />
 		<Unit filename="ai_cpp_dll/code/common.h" />
+		<Unit filename="ai_cpp_dll/code/configload.h" />
+		<Unit filename="ai_cpp_dll/code/debug.h" />
 		<Unit filename="code/aishell.h" />
 		<Unit filename="code/arbiter.h" />
-		<Unit filename="code/debug.h" />
 		<Unit filename="code/dll_maneger.h" />
+		<Unit filename="code/file.h" />
 		<Unit filename="code/game.h" />
 		<Unit filename="code/main.cpp" />
 		<Unit filename="code/mylib.h" />
@@ -35,9 +37,6 @@
 		<Unit filename="code/statistics.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
-			<code_completion />
-			<envvars />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

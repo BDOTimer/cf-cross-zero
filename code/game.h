@@ -23,11 +23,11 @@ struct  Game
     ///------------------------------|
     /// Первая игра.                 |
     ///------------------------------:
-    void run_first ()
-    {   steps     = 1;
-        field.clear();
-        set_names  ();
-        go         ();
+    void run_first  ()
+    {   steps      = 1;
+        field.fclear();
+        set_names   ();
+        go          ();
         mode.PAUSE_PRESS_ENTER_INFO();
     }
 
@@ -37,7 +37,7 @@ struct  Game
     void run_second  ()
     {   cntg++         ;
         steps       = 1;
-        field.clear  ();
+        field.fclear ();
         change_fishki();
         set_names    ();
         go();

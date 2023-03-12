@@ -5,7 +5,7 @@
 ///----------------------------------------------------------------------------|
 #include <chrono>
 #include <thread>
-#include "debug.h"
+#include "../ai_cpp_dll/code/debug.h"
 
 
 inline void sleep(size_t ms)
