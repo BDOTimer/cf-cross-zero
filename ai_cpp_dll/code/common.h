@@ -6,10 +6,10 @@
 /// Общий хедер для Arbiter и aiDLL.
 ///----------------------------------------------------------------------------|
 
-#define  l(v)  std::wcout << #v << L" = " << v << L"\n";
-#define ll(v)  std::cout  << #v <<  " = " << v << "\n";
+#ifndef l
+    #define l(v) std::wcout << #v << " = " << (v) << '\n' ;
+#endif // l
 
-#pragma pack(push, 1)
 
 ///----------|
 /// Конфиг.  |
@@ -19,14 +19,15 @@ struct  Cfg
     ///-----------------------------|
     /// Количество фишек для победы.|
     ///-----------------------------:
-    size_t FWIN   =  5;
-    size_t WIDTH  = 10; /// Размер поля по горизонтали.
-    size_t HEIGHT =  5; /// Размер поля по вертикали.
+    size_t FWIN   =  3;
+    size_t WIDTH  =  30; /// Размер поля по горизонтали.
+    size_t HEIGHT =  20; /// Размер поля по вертикали.
     ///-----------------------------.
 
     char FISHKI[2]{'X', 'O'};
-
 };
+
+const char EMPTY = '.';
 
 std::wostream& operator<<(std::wostream& o, const Cfg& c)
 {   std::wcout << L"КОНФИГ --------------:\n";
@@ -58,27 +59,32 @@ std::wostream& operator<<(std::wostream& o, const Plot& p)
 }
 
 
-namespace mss
+namespace stp
 {
     ///-------------------------------------------------|
     /// Когда нужно понять кто первый сделал ход.       |
     ///-------------------------------------------------:
     const Plot START_STEP = {size_t(-111), size_t(-111)};
+    const Plot   NOT_INIT = {size_t(-1  ),         0   };
+    const Plot BAD_RETURN = {size_t(-112),         0   };
 }
 
 
 ///----------------------------------------------------------------------------|
 /// Поле.
 ///----------------------------------------------------------------------------:
-struct  Field
-{   Field() : m(nullptr)
-    {   create();
-    }
-
-    const char EMPTY = '.';
+struct  Field   : std::vector<std::string>
+{       Field() : std::vector<std::string>
+                   (cfg.HEIGHT, std::string(cfg.WIDTH, EMPTY)), m(*this)
+        {
+        }
 
     size_t W = cfg.WIDTH ,
            H = cfg.HEIGHT;
+
+    void set_FISHKA(const Plot& p, char fishka)
+    {   m[p.y][p.x] = fishka;
+    }
 
     ///---------------------------|
     /// Проверка фишки на выигрыш.|
@@ -104,9 +110,6 @@ struct  Field
         return false;
     }
 
-    char* operator[](const size_t i)
-    {   return  m[i];
-    }
 
     void clear()
     {   for    (size_t h = 0; h < H; ++h)
@@ -141,7 +144,7 @@ struct  Field
     {   bool b = p.x < W && p.y < H && m[p.y][p.x] == EMPTY;
         if (!b)
         {
-            if(p == mss::START_STEP)
+            if(p == stp::START_STEP)
             {   /// std::wcout << "mss::START_STEP" << endl;
             }
             else if(p.x >= W && p.y >= H)
@@ -167,17 +170,8 @@ struct  Field
     }
 
 
-private:
-    char** m;
+    std::vector<std::string>& m;
 
-    void create()
-    {   if(nullptr !=  m)  return;
-
-        m = new char* [H];
-        for (size_t i = 0; i < H; i++)
-        {   m[i] = new char[W];
-        }
-    }
 
 #define TESTMODE false
     ///---------------------------|

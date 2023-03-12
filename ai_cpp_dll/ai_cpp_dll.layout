@@ -2,20 +2,24 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="bin\" />
-	<File name="code\ai.dll.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="code\ai_xlat.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2842" topLine="81" />
+			<Cursor1 position="1190" topLine="37" />
+		</Cursor>
+	</File>
+	<File name="code\main.dll.cpp" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="516" topLine="4" />
 		</Cursor>
 	</File>
 	<File name="code\common.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4288" topLine="144" />
+			<Cursor1 position="4843" topLine="167" />
 		</Cursor>
 	</File>
-	<File name="code\main.dll.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="code\ai.dll.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1254" topLine="34" />
+			<Cursor1 position="370" topLine="0" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="1115dd60640a1e2e01c8095100000002=*0;ai_cpp_dll:code\ai.dll.h,1;ai_cpp_dll:code\main.dll.cpp,2;ai_cpp_dll:code\common.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=696;besth=264;minw=696;minh=264;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=1115dd60640a1e2e01c8095100000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=0;besth=0;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=10|" />
 </CodeBlocks_layout_file>

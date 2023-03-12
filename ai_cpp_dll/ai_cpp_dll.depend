@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1678512612 source:c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\main.dll.cpp
+	<vector>
+	<string>
+	<ctime>
+	<cstdlib>
+	<iostream>
+	"common.h"
+	"ai.dll.h"
+
+1678548859 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\common.h
+
+1678545722 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai.dll.h
+

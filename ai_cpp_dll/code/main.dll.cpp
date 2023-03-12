@@ -4,19 +4,25 @@
 ///----------------------------------------------------------------------------|
 /// AI для игры в крестонолики. (это dll проект.)
 ///----------------------------------------------------------------------------:
-#include <iostream> /// c 150 кб до 1000 Kb DLL жиреет!
 #include <vector>
 #include <string>
 #include <ctime>
 #include <cstdlib>
 
+#include <iostream> /// c 150 кб до 1000 Kb DLL жиреет!
+
+#pragma pack(push, 1)
+
+
 #include "common.h"
+//#include "ai_xlat.h"
+
 
 struct Rand
 {   Rand(            ){   srand((unsigned)time(0));}
     Rand(unsigned sid){   srand(sid);              }
-    int operator()(int range_min, int range_max) const
-    {   return rand() % (range_max - range_min) + range_min;
+    int operator    ()(int range_min, int range_max) const
+    {   return rand () % (range_max - range_min) + range_min;
     }
 }rrand;
 
@@ -29,7 +35,7 @@ struct Rand
 
 static AI* ai = nullptr;
 ///--------------------------------------------------|
-/// Интерфейс AI.                                    |
+/// Внешний интерфейс AI.                            |
 ///--------------------------------------------------:
 extern "C"
 {
@@ -43,8 +49,8 @@ extern "C"
     {   return ai->step(enemy_step);
     }
 
-    DLLEXP const wchar_t* _name(                  ){ return name           ; }
-    DLLEXP void         _delete(                  ){ delete ai             ; }
+    DLLEXP const wchar_t* _name(                  ){ return name        ; }
+    DLLEXP void         _delete(                  ){ delete ai          ; }
     DLLEXP void         _stfish(const char FISHKA )
     {      ai->FISHKA  = FISHKA;
         if(ai->FISHKA == cfg.FISHKI[0]) ai->FISHKA_ENEMY = cfg.FISHKI[1];
@@ -52,6 +58,8 @@ extern "C"
         ai->field.clear();
     }
 }
+
+//#pragma pack(pop, 1)
 
 #undef DLLEXP
 

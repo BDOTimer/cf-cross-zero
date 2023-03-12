@@ -11,21 +11,29 @@
 				<Option working_dir="../bin" />
 				<Option object_output="obj/" />
 				<Option type="3" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-O2" />
-					<Add option="-DBUILD_DLL" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-					<Add library="user32" />
-				</Linker>
+				<Option compiler="msys_gcc-93" />
+				<Option projectCompilerOptionsRelation="-1" />
+				<Option projectLinkerOptionsRelation="-1" />
+				<Option projectIncludeDirsRelation="-1" />
+				<Option projectLibDirsRelation="-1" />
+				<MakeCommands>
+					<Build command="" />
+					<CompileFile command="" />
+					<Clean command="" />
+					<DistClean command="" />
+					<AskRebuildNeeded command="" />
+					<SilentBuild command=" &gt; $(CMD_NULL)" />
+				</MakeCommands>
 			</Target>
 		</Build>
 		<Unit filename="code/ai.dll.h" />
+		<Unit filename="code/ai_xlat.h" />
 		<Unit filename="code/common.h" />
 		<Unit filename="code/main.dll.cpp" />
-		<Extensions />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
