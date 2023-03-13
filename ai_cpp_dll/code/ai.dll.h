@@ -11,7 +11,10 @@
 ///------------------------------------|
 /// ...                                |
 ///------------------------------------:
-const wchar_t* name = L"АфтоРэнд";
+//const wchar_t* name = L"Глупыш";
+const wchar_t* name = L"Дебил";
+//const wchar_t* name = L"АфторРэнд";
+
 
 struct  AI
 {       AI()
@@ -32,7 +35,7 @@ struct  AI
     ///---------------------|
     /// Послединй ход врага.|
     ///---------------------:
-    Plot last_step{stp::START_STEP};
+    Plot last_step{stp::NOT_INIT};
 
     ///---------------------|
     /// Это ваше поле.      |
@@ -96,9 +99,12 @@ private:
             ///------------------------:
             if(last_step == stp::START_STEP)
             {   //wprintf(L"%s %s", name, L"ходит первым.");
-                std::wcout << name << L"ходит первым.\n" << std::endl;
+                std::wcout << name << L" ходит первым.\n" << std::endl;
             }
-            else printf("ERROR in dll ...");
+            else
+            {   printf("ERROR in dll ...");
+                std::cin.get();
+            }
         }
     }
 };

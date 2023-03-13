@@ -20,6 +20,7 @@ struct  Arbiter
 
 private:
 
+    Field       field  ;
     DLL_manager DLL_man;
 
     ///------------------------------|
@@ -29,8 +30,8 @@ private:
     {
         for(size_t N = DLL_man.amount_games(), ipair = 0; ipair < N; ++ipair)
         {
-            Game        game( ipair);
-            set_players(game, ipair);
+            Game        game(field, ipair);
+            set_players(game,       ipair);
 
             game.run_first ();
             game.run_second();

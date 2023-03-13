@@ -133,19 +133,17 @@ public:
     static void testclass();
 };
 
+
 ///------------------------------|
-/// Тест.
+/// Тест.                        |
 ///------------------------------:
 inline void DLL_manager::testclass()
-{   std::wcout << L"TEST DLL_manager:\n";
+{   TEST_START(DLL_manager);
 
     DLL_manager DLL_man;
 
-    std::wcout << "\nTEST FINISHED!\n" << std::endl;;
-    std::cin.get();
+    TEST_FINISHED;
 }
-
-
 
 
 #endif // DLL_MANEGER_H

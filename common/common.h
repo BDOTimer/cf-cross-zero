@@ -20,7 +20,7 @@ struct  Cfg
     ///-----------------------------|
     /// Количество фишек для победы.|
     ///-----------------------------:
-    size_t FWIN   =  5;
+    size_t FWIN   =   5;
     size_t WIDTH  =  30; /// Размер поля по горизонтали.
     size_t HEIGHT =  20; /// Размер поля по вертикали.
     ///-----------------------------.
@@ -31,13 +31,13 @@ struct  Cfg
 const char EMPTY = '.';
 
 std::wostream& operator<<(std::wostream& o, const Cfg& c)
-{   std::wcout << L"КОНФИГ --------------:\n";
-    l(c.FWIN)
-    l(c.WIDTH)
-    l(c.HEIGHT)
-    l(c.FISHKI[0])
-    l(c.FISHKI[1])
-    std::wcout << std::endl;
+{   o   << L"КОНФИГ ---------------------------:\n"
+        << "   FWIN      = " << c.FWIN      << '\n'
+        << "   WIDTH     = " << c.WIDTH     << '\n'
+        << "   HEIGHT    = " << c.HEIGHT    << '\n'
+        << "   FISHKI[0] = " << c.FISHKI[0] << '\n'
+        << "   FISHKI[1] = " << c.FISHKI[1] << '\n'
+        << std::endl;
     return o;
 }
 
@@ -55,7 +55,7 @@ struct Plot
 
 
 std::wostream& operator<<(std::wostream& o, const Plot& p)
-{   o << "{ " << p.x << ", " << p.y << " }";
+{          o << "{ " << p.x << ", " << p.y << " }";
     return o;
 }
 
@@ -78,7 +78,7 @@ struct  Field   : std::vector<std::string>
 {       Field() : m(*this)
         {
             if(!config_load.get_config(cfg))
-            {   config_load.get_field(cfg, *this);
+            {   config_load.get_field (cfg, *this);
             }
             else
             {   m = std::vector<std::string>
@@ -86,7 +86,7 @@ struct  Field   : std::vector<std::string>
             }
         }
 
-    Config_load config_load;
+    ConfigLoad config_load;
 
     size_t W = cfg.WIDTH ,
            H = cfg.HEIGHT;

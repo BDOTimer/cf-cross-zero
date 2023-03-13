@@ -35,10 +35,8 @@ struct Split
 ///----------------------------------------------------------------------------|
 /// LoadPregame
 ///----------------------------------------------------------------------------|
-const char* ERROR_PREGAME_FILE_LOAD = "ERROR: PREGAME_FILE_LOAD";
-
-struct  Config_load
-{       Config_load() : file_name("config.txt")
+struct  ConfigLoad
+{       ConfigLoad() : file_name("config.txt")
         {
             std::wcout << L"ЗАГРУЗКА КОНФИГА ...\n";
 
@@ -58,12 +56,13 @@ struct  Config_load
 
     template<typename T>
     bool get_config(T& config)
-    {
+    {   if(m.empty()) return error;
+
         Split ready(m[0]);
 
         //info(ready.v);
 
-        if(ready.v.size() != 5)
+        if   (ready.v.size() != 5)
         {   l(ready.v.size())
             throw ERROR_EXCEPTION;
         }
@@ -138,16 +137,18 @@ public:
     template<typename tC, typename tF> static void testclass(tC&);
 };
 
-
+///------------------------------|
+/// Тест.                        |
+///------------------------------:
 template<typename tC, typename tF>
-inline void Config_load::testclass(tC& cfg)
-{   std::wcout << L"TEST Config_load:\n";
+inline void ConfigLoad::testclass(tC& cfg)
+{   TEST_START(ConfigLoad);
 
     tF f;
 
-    Config_load  pregame;
-                 pregame.get_config(cfg);
-                 pregame.get_field (cfg, f);
+    ConfigLoad  pregame;
+                pregame.get_config(cfg);
+                pregame.get_field (cfg, f);
 
     std::wcout << cfg << "\n\n";
 
@@ -155,8 +156,7 @@ inline void Config_load::testclass(tC& cfg)
 
     std::cout << f << '\n';
 
-    std::wcout << "\nTEST FINISHED!\n" << std::endl;
-    std::cin.get();
+    TEST_FINISHED;
 }
 
 #endif // CONFIG_LOAD_H

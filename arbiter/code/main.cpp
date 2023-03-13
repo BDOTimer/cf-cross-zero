@@ -16,52 +16,31 @@
 
 #pragma pack(push, 1)
 
+
 const wchar_t* NAME_ARBITER = L"ARBITER";
-
-///----------------------------------------------------------------------------|
-/// Режимы лога.
-///----------------------------------------------------------------------------:
-struct Mode
-{
-    int  TIME_PAUSE_STEPS = 500;   /// Автопауза между шагами.
-    bool SILENCE          = false; /// true -> Без лога процесса игры.
-    bool KEYTRACER        = false; /// true -> Остановка на каждом ходу.
-
-    void PAUSE_PRESS_ENTER_INFO()
-    {   if(SILENCE) return;
-        std::cin.get();
-    }
-
-    void PAUSE_PRESS_ENTER_ERROR()
-    {   std::wcout << '\a';
-        std::cin.get();
-    }
-
-    void PAUSE_PRESS_ENTER_STEP()
-    {   if(!KEYTRACER) return;
-        std::cin.get();
-    }
-
-    void PAUSE_PRESS_ENTER_STRONG(std::wstring mess = L"")
-    {   std::wcout << mess << "\a\n" << std::endl;
-        std::cin.get();
-    }
-
-}mode;
 
 
 #include "mylib.h"
+#include "mode.h"
 #include "arbiter.h"
 
 
-Sys sys;
+///---------------------------|
+/// Системное.                |
+///---------------------------:
+struct  Sys
+{       Sys()
+        {   std::setlocale(0, "");
+            //std::system("mode 60,30");
+        }
+}sys;
 
 
 /// TODO ...
 ///-----------------------------------|
 /// Новейший моск.                    |
 ///-----------------------------------:
-#include "../ai_cpp_dll/code/ai_xlat.h"
+#include "../../ai_cpp_dll/code/ai_xlat.h"
 
 inline void tests()
 {
@@ -72,7 +51,7 @@ inline void tests()
   //AI_xlat     ::testclass();
 
   //Blacklist  ::testclass();
-  //Config_load::testclass<Cfg, Field>(cfg);
+  //ConfigLoad::testclass<Cfg, Field>(cfg);
 }
 
 int main()

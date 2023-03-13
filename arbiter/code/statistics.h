@@ -3,6 +3,8 @@
 ///----------------------------------------------------------------------------|
 /// "statistics.h"
 ///----------------------------------------------------------------------------|
+#include "mylib.h"
+
 
 ///----------------------------------------------------------------------------|
 /// Статистика.
@@ -19,10 +21,10 @@ struct  Statistics
     void add_nob(){ nobody ++; rating +=1; }
 
     std::wstring get_str()
-    {   return  std::wstring(  L"РЕЙТИНГ: " ) + std::to_wstring(rating ) +
-                std::wstring(L", ПОБЕДЫ: "  ) + std::to_wstring(victory) +
-                std::wstring(L", ПРОИГРЫШ: ") + std::to_wstring(defeat ) +
-                std::wstring(L", НИЧЬИ: "   ) + std::to_wstring(nobody );
+    {   return  std::wstring(  L"РЕЙТИНГ: " ) + myl::to_wstring(rating ) +
+                std::wstring(L", ПОБЕДЫ: "  ) + myl::to_wstring(victory) +
+                std::wstring(L", ПРОИГРЫШ: ") + myl::to_wstring(defeat ) +
+                std::wstring(L", НИЧЬИ: "   ) + myl::to_wstring(nobody );
     }
 };
 

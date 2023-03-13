@@ -15,8 +15,11 @@
 				<Option projectCompilerOptionsRelation="-1" />
 				<Option projectLinkerOptionsRelation="-1" />
 				<Option projectIncludeDirsRelation="-1" />
-				<Option projectResourceIncludeDirsRelation="-1" />
 				<Option projectLibDirsRelation="-1" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-std=c++17" />
+				</Compiler>
 				<MakeCommands>
 					<Build command="" />
 					<CompileFile command="" />
@@ -27,11 +30,11 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="../common/common.h" />
+		<Unit filename="../common/configload.h" />
+		<Unit filename="../common/debug.h" />
 		<Unit filename="code/ai.dll.h" />
 		<Unit filename="code/ai_xlat.h" />
-		<Unit filename="code/common.h" />
-		<Unit filename="code/configload.h" />
-		<Unit filename="code/debug.h" />
 		<Unit filename="code/main.dll.cpp" />
 		<Extensions />
 	</Project>

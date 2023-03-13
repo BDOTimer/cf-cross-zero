@@ -36,6 +36,7 @@ struct  Player
         }
 
         /// TODO ...
+        /// Играет человек.
 
         return {size_t(-1), 0};
     }
@@ -45,7 +46,5 @@ private:
 
     friend struct  Game;
 };
-
-
 
 #endif // PLAYER_H

@@ -178,15 +178,14 @@ public:
 
 
 ///------------------------------|
-/// Тест.
+/// Тест.                        |
 ///------------------------------:
 void AI_xlat::testclass()
-{   std::wcout << L"Тест AI_xlat:\n";
+{   TEST_START(AI_xlat);
 
     AI_xlat x;
 
-    std::wcout << "TEST FINSHED!\n";
-    std::cin.get();
+    TEST_FINISHED;
 }
 
 

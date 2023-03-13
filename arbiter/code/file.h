@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 
+#include "../../common/debug.h"
 
 ///----------------------------------------------------------------------------|
 /// Blacklist
@@ -46,8 +47,12 @@ public:
     static void testclass();
 };
 
+
+///------------------------------|
+/// Тест.                        |
+///------------------------------:
 inline void Blacklist::testclass()
-{   std::wcout << L"TEST Blacklist:\n";
+{   TEST_START(Blacklist);
 
     Blacklist   bl;
                 bl.add("aaa.dll");
@@ -55,8 +60,7 @@ inline void Blacklist::testclass()
 
     std::cout << (bl.is_this_file_fail("aaa.dll") ? "FAIL" : "GOOD") << '\n';
 
-    std::wcout << "\nTEST FINISHED!\n" << std::endl;;
-    std::cin.get();
+    TEST_FINISHED;
 }
 
 #endif // FILE_H

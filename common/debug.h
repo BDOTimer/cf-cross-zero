@@ -13,7 +13,7 @@
 #define l(v)      std::wcout << #v << " = " << (v) << '\n' ;
 #define ls(v)     std::cout  << #v << " = " << (v) << '\n' ;
 #define ll        std::cin.get();
-#define sss       std::cout << "SIGNAL\n";ll
+#define sssg       std::cout << "SIGNAL\n";ll
 #else
 #define ASSERT(U)
 #define l(v)
@@ -48,5 +48,11 @@ struct  CustomException : public std::exception
 
 
 #define ERROR_EXCEPTION CustomException(__LINE__, __FILE__)
+
+#define TEST_START(N) std::wcout << "\nTEST "   << #N              \
+                                 << " START:\n" << std::endl;
+#define TEST_FINISHED std::wcout << "\nTEST "      << __FUNCTION__ \
+                                 << " FINISHED!\n" << std::endl;   \
+                      std::cin.get();
 
 #endif // DEBUG_H

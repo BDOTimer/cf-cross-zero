@@ -13,8 +13,7 @@
 
 #pragma pack(push, 1)
 
-
-#include "common.h"
+#include "../../common/common.h"
 //#include "ai_xlat.h"
 
 
@@ -55,7 +54,7 @@ extern "C"
     {      ai->FISHKA  = FISHKA;
         if(ai->FISHKA == cfg.FISHKI[0]) ai->FISHKA_ENEMY = cfg.FISHKI[1];
         else                            ai->FISHKA_ENEMY = cfg.FISHKI[0];
-        ai->field.clear();
+        ai->field.fclear();
     }
 }
 

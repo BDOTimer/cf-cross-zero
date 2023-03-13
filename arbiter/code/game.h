@@ -3,13 +3,14 @@
 ///----------------------------------------------------------------------------|
 /// "game.h"
 ///----------------------------------------------------------------------------|
+#include "mode.h"
 #include "player.h"
 
 ///----------------------------------------------------------------------------|
 /// Вся ИГРА.
 ///----------------------------------------------------------------------------:
 struct  Game
-{       Game(int Cnt) : cntg(Cnt * 2 + 1)
+{       Game(Field& f, int Cnt) : field(f), cntg(Cnt * 2 + 1)
         {
         }
        ~Game()
@@ -45,9 +46,9 @@ struct  Game
     }
 
 private:
-    Field field;
-    int    cntg;
-    int   steps;
+    Field& field;
+    int     cntg;
+    int    steps;
 
     ///------------------------------|
     /// Процесс игры.                |
@@ -100,7 +101,7 @@ private:
     void show()
     {   std::system ("cls");
         std::wcout << names;
-        std::wcout << "STEPS: " << std::setw(5) << std::to_wstring(steps) << '\n';
+        std::wcout << "STEPS: " << std::setw(5) << myl::to_wstring(steps) << '\n';
         std::cout  << field << std::endl;
         sleep(mode.TIME_PAUSE_STEPS);
     }
@@ -119,6 +120,8 @@ private:
 
             a->ai->stat.add_def();
             b->win_info        ();
+
+            mode.PAUSE_PRESS_ENTER_STRONG(L".");
             return true;
         }
 
@@ -149,7 +152,7 @@ private:
         std::wstring B(1, b->ai->get_FISHKA());
 
         names  = L"Игра:";
-        names += std::to_wstring(cntg) + L'\n';
+        names += myl::to_wstring(cntg) + L'\n';
         names += a->ai->who()                 ;
         names += L"\"" + A + L"\"" + L" <=> " ;
         names += b->ai->who()                 ;
