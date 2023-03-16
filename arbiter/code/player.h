@@ -12,7 +12,7 @@ struct  Player
 {       Player(std::wstring_view nm) : name(nm)
         {   /// Играет человек.
         }
-        Player(AI* ai_) : ai(ai_)
+        Player(AI_wrap* ai_) : ai(ai_)
         {   /// Играет ИИ.
 
             name = ai->who();
@@ -23,7 +23,7 @@ struct  Player
 
     std::wstring name;
 
-    void win_info   ()
+    void win_info()
     {   ai->stat.add_win();
         std::wcout << L"Игрок " << name << L" ВЫИГРАЛ!\n";
     }
@@ -31,8 +31,8 @@ struct  Player
     Plot step(const Plot last_step)
     {   if(ai != nullptr)
         {
-            auto   plot = ai->step(last_step);
-            return plot;
+            Plot   plotwww = ai->_step(last_step);
+            return plotwww;
         }
 
         /// TODO ...
@@ -41,8 +41,10 @@ struct  Player
         return {size_t(-1), 0};
     }
 
+    AI_wrap* get_ai() { return ai; }
+
 private:
-    AI* ai = nullptr;
+    AI_wrap* ai = nullptr;
 
     friend struct  Game;
 };

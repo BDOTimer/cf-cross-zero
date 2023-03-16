@@ -38,6 +38,8 @@ struct Split
 struct  ConfigLoad
 {       ConfigLoad() : file_name("config.txt")
         {
+            if(!TYPE_IS_SERVER_OR_CLIENT) return;
+
             std::wcout << L"ЗАГРУЗКА КОНФИГА ...\n";
 
             std::ifstream f(file_name);
@@ -54,6 +56,14 @@ struct  ConfigLoad
 
     bool error = true;
 
+    const size_t ERR_ = 0;
+
+    size_t F;
+    size_t H;
+    size_t W;
+    char   X,
+           O;
+
     template<typename T>
     bool get_config(T& config)
     {   if(m.empty()) return error;
@@ -67,10 +77,6 @@ struct  ConfigLoad
             throw ERROR_EXCEPTION;
         }
 
-        size_t F;
-        size_t H;
-        size_t W;
-
         try
         {
             F = std::stoi(ready.v[0]);
@@ -83,11 +89,14 @@ struct  ConfigLoad
             if( 32 > A && A > 128) throw ERROR_EXCEPTION;
             if( 32 > B && B > 128) throw ERROR_EXCEPTION;
 
-            config.FWIN   = F;
-            config.HEIGHT = H;
-            config.WIDTH  = W;
+            config.FWIN      = F;
+            config.HEIGHT    = H;
+            config.WIDTH     = W;
             config.FISHKI[0] = ready.v[3][0];
             config.FISHKI[1] = ready.v[4][0];
+
+            X = ready.v[3][0];
+            O = ready.v[4][0];
         }
         catch(const CustomException& e)
         {   std::cout << e.what() << '\n';
@@ -97,9 +106,12 @@ struct  ConfigLoad
         return error = false;
     }
 
+    ///---------------------------|
+    /// Возвращает кол-во фишек.  |
+    ///---------------------------:
     template<typename C, typename T>
-    void get_field(const C& cfg, T& field)
-    {   if(error) return;
+    size_t get_field(const C& cfg, T& field)
+    {   if(error) return 0;
 
         data.resize(cfg.HEIGHT);
 
@@ -107,7 +119,7 @@ struct  ConfigLoad
         field.W = cfg.WIDTH;
 
         for(size_t i = 1; i < m.size(); ++i)
-        {   data [i - 1] = m[i];
+        {   data [ i - 1] =   m[i];
         }
 
         for(auto& s : data)
@@ -122,17 +134,75 @@ struct  ConfigLoad
             }
         }
 
-        field = data;
+        if(size_t amount = validate(data); amount != 0)
+        {
+            field =  data;
+            return amount;
+        }
+
+        return 0;
     }
 
     auto& get_data() const
     {   return data;
     }
 
+    ///---------------------------|
+    /// Загрузка фишек в ai.      |
+    ///---------------------------:
+    template<typename A>
+    void fishki2ai(   A* ai)
+    {   if(error || data.empty()) return;
+
+        for     (size_t h = 0; h < H; ++h)
+        {   for (size_t w = 0; w < W; ++w)
+            {   if (data[h][w] != '.')
+                {   ai->_sendplot({w, h}, data[h][w]);
+                }
+            }
+        }
+    }
+
 private:
     const char* file_name;
     std::vector<std::string>    m;
     std::vector<std::string> data;
+
+    size_t validate(const std::vector<std::string>& a) const
+    {
+        size_t cntX = 0;
+        size_t cntO = 0;
+
+        for    (const auto& r : a)
+        {   for(const auto& c : r)
+            {
+                if     (c == X) ++cntX;
+                else if(c == O) ++cntO;
+                else if(c != '.')
+                {
+                    std::wcout << L"ERROR: Неизвестный символ в конфиге.\n";
+                    std::cin.get();
+                    return ERR_;
+                }
+            }
+        }
+
+        if(cntX < cntO)
+        {   std::wcout << L"ERROR: Белых больше чем черных!\n";
+            std::cin.get();
+            return ERR_;
+        }
+        else if(cntX - cntO > 1)
+        {   std::wcout << L"ERROR: Черных слишком много!\n";
+            std::cin.get();
+            return ERR_;
+        }
+
+        std::wcout << L"КОНФИГ: Ошибок не найдено.\n";
+
+        return cntX + cntO;
+    }
+
 public:
     template<typename tC, typename tF> static void testclass(tC&);
 };

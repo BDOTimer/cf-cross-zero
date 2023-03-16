@@ -3,6 +3,7 @@
 ///----------------------------------------------------------------------------|
 /// "game.h"
 ///----------------------------------------------------------------------------|
+#include "../../common/debug.h"
 #include "mode.h"
 #include "player.h"
 
@@ -27,6 +28,8 @@ struct  Game
     void run_first  ()
     {   steps      = 1;
         field.fclear();
+        field.config_load.fishki2ai(a->ai);
+        field.config_load.fishki2ai(b->ai);
         set_names   ();
         go          ();
         mode.PAUSE_PRESS_ENTER_INFO();
@@ -39,6 +42,8 @@ struct  Game
     {   cntg++         ;
         steps       = 1;
         field.fclear ();
+        field.config_load.fishki2ai(a->ai);
+        field.config_load.fishki2ai(b->ai);
         change_fishki();
         set_names    ();
         go();
@@ -111,6 +116,7 @@ private:
     ///------------------------------:
     bool go_step(Plot& last_step)
     {
+
         last_step = a->step(last_step);
         bool good = field.verification(last_step, a->ai->who().c_str());
         if (!good)

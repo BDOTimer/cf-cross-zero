@@ -6,6 +6,8 @@
 /// Общий хедер для Arbiter и aiDLL.
 ///----------------------------------------------------------------------------|
 
+extern bool TYPE_IS_SERVER_OR_CLIENT;
+
 #ifndef l
     #define l(v) std::wcout << #v << " = " << (v) << '\n' ;
 #endif // l
@@ -77,8 +79,10 @@ namespace stp
 struct  Field   : std::vector<std::string>
 {       Field() : m(*this)
         {
-            if(!config_load.get_config(cfg))
-            {   config_load.get_field (cfg, *this);
+            if(TYPE_IS_SERVER_OR_CLIENT && !config_load.get_config(cfg))
+            {
+                {   amount_fish_2_config = config_load.get_field(cfg, *this);
+                }
             }
             else
             {   m = std::vector<std::string>
@@ -90,6 +94,14 @@ struct  Field   : std::vector<std::string>
 
     size_t W = cfg.WIDTH ,
            H = cfg.HEIGHT;
+
+
+    size_t amount_fish_2_config = 0;
+
+
+    char who_step()
+    {   return amount_fish_2_config % 2 == 0 ? cfg.FISHKI[0] : cfg.FISHKI[1];
+    }
 
 
     void set_FISHKA(const Plot& p, char fishka)
@@ -122,7 +134,15 @@ struct  Field   : std::vector<std::string>
 
     void fclear()
     {
-        if(!config_load.error) m = config_load.get_data();
+        if(!config_load.error)
+        {
+            m = config_load.get_data();
+
+            if(0 != amount_fish_2_config)
+            {
+                /// ...
+            }
+        }
         else for(size_t h = 0; h < H; ++h)
         {    for(size_t w = 0; w < W; ++w)
              {   m[h][w] = EMPTY;

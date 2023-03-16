@@ -1,19 +1,31 @@
 #ifndef AI_DLL_H
 #define AI_DLL_H
 
+#include "../../common/common.h"
+
 ///----------------------------------------------------------------------------|
 /// ИИ.
 ///     Всё что нужно сделать это ПРИНЯТЬ РЕШЕНИЕ,
 ///     в какую координату поставить фишку.
 ///----------------------------------------------------------------------------:
 
+const bool DEBUG_DLL_RUNTIME = false;
 
 ///------------------------------------|
 /// ...                                |
 ///------------------------------------:
-//const wchar_t* name = L"Глупыш";
-const wchar_t* name = L"Дебил";
-//const wchar_t* name = L"АфторРэнд";
+//const wchar_t* authorname = L"Глупыш";
+const wchar_t* authorname = L"Дебил";
+//const wchar_t* authorname = L"АфторРэнд";
+
+
+struct Rand
+{   Rand(            ){   srand((unsigned)time(0));}
+    Rand(unsigned sid){   srand(sid);              }
+    int  operator   ()(int range_min, int range_max)   const
+    {   return rand () %  (range_max -    range_min) + range_min;
+    }
+}rrand;
 
 
 struct  AI
@@ -51,18 +63,25 @@ struct  AI
     {
         set_step(enemy_step);
 
+        Plot p;
+
         /// TODO ...
         ///--------------------...
         /// пример простейшего решения ...
         ///--------------------...
         while(true)
         {
-            Plot p;
                  p.x = rrand(0, field.W);
                  p.y = rrand(0, field.H);
 
             if( field.verification_no_info(p))
             {   field[p.y][p.x] = FISHKA;
+
+                if(DEBUG_DLL_RUNTIME)
+                {   std::wcout << authorname << L" сделал ход: " << p << '\n';
+                    std::cin.get();
+                }
+
                 return p;
             }
         }
@@ -89,8 +108,13 @@ private:
     void set_step(const Plot& enemy_step)
     {   last_step = enemy_step;
 
-        if (field.verification(last_step, name))
+        if (field.verification(last_step, authorname))
         {   field[last_step.y][last_step.x] = FISHKA_ENEMY;
+
+            if(DEBUG_DLL_RUNTIME)
+            {   std::wcout  << authorname  << L" состояние доски:\n";
+                std::cout   << field       << std::endl;
+            }
         }
         else
         {
@@ -98,8 +122,13 @@ private:
             /// Арбитер прислал НЕ ход.|
             ///------------------------:
             if(last_step == stp::START_STEP)
-            {   //wprintf(L"%s %s", name, L"ходит первым.");
-                std::wcout << name << L" ходит первым.\n" << std::endl;
+            {   //wprintf(L"%s %s", authorname, L"ходит первым.");
+
+                if(DEBUG_DLL_RUNTIME)
+                {   std::wcout  << authorname  << L" ходит первым.\n";
+                    std::wcout  << L"Состояние доски:\n";
+                    std::cout   << field       << std::endl;
+                }
             }
             else
             {   printf("ERROR in dll ...");

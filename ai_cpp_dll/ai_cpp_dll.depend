@@ -12,3 +12,28 @@
 
 1678545722 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai.dll.h
 
+1678875903 source:e:\cb-2023\cf[cross-zero][2023-03-15][-]\ai_cpp_dll\code\main.dll.cpp
+	<cstdlib>
+	<vector>
+	<string>
+	<ctime>
+	<iostream>
+	"ai.dll.h"
+	<windows.h>
+
+1678875937 e:\cb-2023\cf[cross-zero][2023-03-15][-]\ai_cpp_dll\code\ai.dll.h
+	"../../common/common.h"
+
+1678785829 e:\cb-2023\cf[cross-zero][2023-03-15][-]\common\common.h
+	"configload.h"
+
+1678797829 e:\cb-2023\cf[cross-zero][2023-03-15][-]\common\configload.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<vector>
+	<string>
+	"debug.h"
+
+1678817330 e:\cb-2023\cf[cross-zero][2023-03-15][-]\common\debug.h
+

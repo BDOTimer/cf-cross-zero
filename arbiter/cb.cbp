@@ -25,6 +25,7 @@
 		<Unit filename="../common/common.h" />
 		<Unit filename="../common/configload.h" />
 		<Unit filename="../common/debug.h" />
+		<Unit filename="code/ai_wrap.h" />
 		<Unit filename="code/aishell.h" />
 		<Unit filename="code/arbiter.h" />
 		<Unit filename="code/dll_maneger.h" />
@@ -35,6 +36,7 @@
 		<Unit filename="code/mylib.h" />
 		<Unit filename="code/player.h" />
 		<Unit filename="code/statistics.h" />
+		<Unit filename="code/vers/aishell_SmallEvil.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

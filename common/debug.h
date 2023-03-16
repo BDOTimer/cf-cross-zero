@@ -13,7 +13,7 @@
 #define l(v)      std::wcout << #v << " = " << (v) << '\n' ;
 #define ls(v)     std::cout  << #v << " = " << (v) << '\n' ;
 #define ll        std::cin.get();
-#define sssg       std::cout << "SIGNAL\n";ll
+#define sssx       std::cout << "SIGNAL\n";ll
 #else
 #define ASSERT(U)
 #define l(v)

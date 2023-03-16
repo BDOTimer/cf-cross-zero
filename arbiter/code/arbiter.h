@@ -49,13 +49,27 @@ private:
     {
         const auto&[ai1, ai2] = DLL_man.get_pair(ipair);
 
-        ai1->set_FISHKA(cfg.FISHKI[0]);
-        ai2->set_FISHKA(cfg.FISHKI[1]);
+        char fishka = field.who_step();
+        l(fishka)
+
+        if(fishka == cfg.FISHKI[0])
+        {   ai1->set_FISHKA(cfg.FISHKI[0]);
+            ai2->set_FISHKA(cfg.FISHKI[1]);
+        }
+        else
+        {   ai1->set_FISHKA(cfg.FISHKI[1]);
+            ai2->set_FISHKA(cfg.FISHKI[0]);
+        }
+
 
         ASSERT(nullptr == game.a && nullptr == game.b);
 
         game.a = new Player(ai1);
         game.b = new Player(ai2);
+
+        if(field.who_step() != game.a->get_ai()->get_FISHKA())
+        {
+        }
     }
 
     ///------------------------------|
@@ -64,7 +78,7 @@ private:
     void show_raiting()
     {   std::wcout << L"ИТОГОВАЯ ТАБЛИЦА РЕЙТИНГОВ!\n";
 
-        std::multimap<int, AI*, std::greater<>> m;
+        std::multimap<int, AI_wrap*, std::greater<>> m;
 
         for(const auto& e : DLL_man.get_aibots())
         {   m.insert(std::make_pair(e->stat.rating, e));

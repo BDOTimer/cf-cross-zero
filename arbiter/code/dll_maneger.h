@@ -5,6 +5,7 @@
 ///----------------------------------------------------------------------------|
 #include <filesystem>
 #include "aishell.h"
+#include "vers/aishell_SmallEvil.h"
 
 ///----------------------------------------------------------------------------|
 /// Получаем имена всех dll.
@@ -60,9 +61,9 @@ struct  DLL_manager
             for(auto& ai : aibots) delete ai;
         }
 
-    const      std::pair<AI*, AI*> get_pair  (size_t i )
-    {   return std::pair<AI*, AI*>(aibots[tab[i].first ],
-                                   aibots[tab[i].second]);
+    const      std::pair<AI_wrap*, AI_wrap*> get_pair  (size_t i )
+    {   return std::pair<AI_wrap*, AI_wrap*>(aibots[tab[i].first ],
+                                             aibots[tab[i].second]);
     }
 
     void info()
@@ -71,11 +72,13 @@ struct  DLL_manager
         for(const auto& ai : aibots)
         {   std::wcout << L"  "
                        << std::setw( 3) << ++cnt << ".  "
-                       << ai->who()     << '\n';
+                       << ai->who()     << ",  "
+                       << ai->_get_interface_version()
+                       << '\n';
         }   std::wcout << std::endl;
     }
 
-    const std::vector<AI*>& get_aibots() const
+    const std::vector<AI_wrap*>& get_aibots() const
     {   return aibots;
     }
 
@@ -88,18 +91,37 @@ private:
     ///----------------------------------|
     /// Готовим мозги.                   |
     ///----------------------------------:
-    std::vector<AI*> aibots;
+    std::vector<AI_wrap*> aibots;
 
     void load()
     {
+        std::string version ;
+        HINSTANCE   hProcDLL;
+
         for(const auto&   name : findDLL.get())
         {   std::string s(name.begin(), name.end());
 
-            aibots.push_back(new AI(s.c_str()));
+            try
+            {   hProcDLL = AI_wrap::get_hinst  (s.c_str());
+                version  = AI_wrap::get_version(hProcDLL );
+            }
+            catch(...)
+            {
+                continue;
+            }
+
+
+            if(version == "interface_version:xlat")
+            {
+                aibots.push_back(new AI(name.c_str(), hProcDLL));
+            }
+            else if(version == "interface_version:se")
+            {
+                aibots.push_back(new AI_SmallEvil(name.c_str(), hProcDLL));
+            }
 
             if(aibots.back()->error)
-            {
-                delete aibots.back    ();
+            {   delete aibots.back    ();
                        aibots.pop_back();
             }
         }

@@ -1,41 +1,36 @@
-﻿#ifndef AISHELL_H
-#define AISHELL_H
+﻿#ifndef AISHELL_SE_H
+#define AISHELL_SE_H
+
+const char* INTERFACE_VERSION = "interface_version:se";
 ///----------------------------------------------------------------------------|
-/// "aishell.h"
+/// "aishell_SmallEvil.h"
 ///----------------------------------------------------------------------------|
-#include "../../common/common.h"
-#include "statistics.h"
+#include "../../../common/common.h"
+#include "../statistics.h"
 #include <windows.h>
 
-#include "ai_wrap.h"
+#include "../ai_wrap.h"
 
 ///----------------------------------------------------------------------------|
 /// ИИ.
 ///----------------------------------------------------------------------------:
-///  __cdecl  для VS
-/// __stdcall для GCC ?
-typedef const wchar_t*(__cdecl * _name_t    )(                        );
-typedef Plot          (__cdecl * _step_t    )(const Plot last_step    );
-typedef void          (__cdecl * _create_t  )(const Cfg  cfg          );
-typedef void          (__cdecl * _delete_t  )(                        );
-typedef void          (__cdecl * _stfish_t  )(char  FISHKA            );
-typedef void          (__cdecl * _sendplot_t)(Plot  plot, char color  );
+
+typedef void (__stdcall * init_t     )();
+typedef void (__stdcall * release_t  )();
+typedef void (__stdcall * new_game_t )(int w, int h, int chain, bool color);
+typedef void (__stdcall * set_point_t)(int x, int y, bool color);
+typedef void (__stdcall * step_t     )(int* x, int* y, int op_x, int op_y);
+typedef const wchar_t* (__stdcall * name_t                )();
 
 
-struct  AI : public AI_wrap
-{       AI ( const wchar_t* dllnm, HINSTANCE hinst)
-           : dllnamew      (dllnm)
+struct  AI_SmallEvil : public AI_wrap
+{       AI_SmallEvil(const wchar_t* dllnm, HINSTANCE hinst) : dllnamew(dllnm)
         {
             try
             {   hGetProcIDDLL = hinst;
+
                 load_dll(   );
                 _create (cfg);
-
-                /*
-                 *  std::wcout << L"DLL load GOOD!\n";
-                 *  std::wcout << L"_name() returned: "
-                 *             << _name() << std::endl;
-                 */
 
                 nm_dllname  = std::wstring(_name());
             }
@@ -46,16 +41,9 @@ struct  AI : public AI_wrap
             nm_dllname += L". \"" ;
             nm_dllname += dllnamew;
             nm_dllname += L"\" "  ;
-/*
-            std::wostringstream oss;
-            oss.setf(std::ios::left);
-            oss<< std::setw(14) << std::wstring(_name());
-            oss << L" [" << dllnamew << L"]";
-            nm_dllname = oss.str();
-*/
         }
-       ~AI()
-        {
+       ~AI_SmallEvil()
+        {   /// TODO: выгрузить DLL.
         }
 
 /*
@@ -136,33 +124,35 @@ private:
     std::wstring   dllnamew;
 
 private:
-    _name_t                               name_    ;
-    _step_t                               step_    ;
-    _create_t                             create_  ;
-    _delete_t                             delete_  ;
-    _stfish_t                             stfish_  ;
-    _sendplot_t                           sendplot_;
-     get_interface_version_t get_interface_version ;
+
+    /// smallevel
+    init_t                  init                 ;
+    release_t               release              ;
+    new_game_t              new_game             ;
+    set_point_t             set_point            ;
+    step_t                  step                 ;
+    name_t                  name                 ;
+    get_interface_version_t get_interface_version;
 
 
 public:
     #define GET_PROC_ADDRESS(V) get_proc_address(V, #V)
     void load_dll()
     {
-        GET_PROC_ADDRESS(name_    );
-        GET_PROC_ADDRESS(step_    );
-        GET_PROC_ADDRESS(create_  );
-        GET_PROC_ADDRESS(delete_  );
-        GET_PROC_ADDRESS(stfish_  );
-        GET_PROC_ADDRESS(sendplot_);
+        GET_PROC_ADDRESS(name     );
+        GET_PROC_ADDRESS(init     );
+        GET_PROC_ADDRESS(release  );
+        GET_PROC_ADDRESS(new_game );
+        GET_PROC_ADDRESS(set_point);
+        GET_PROC_ADDRESS(step     );
         GET_PROC_ADDRESS(get_interface_version);
     }
     #undef GET_PROC_ADDRESS
 
     template<typename F>
-    void get_proc_address(F& foo, const char*  fooname)
+    void get_proc_address(F& foo, const char* fooname)
     {
-             foo = (F)GetProcAddress(hGetProcIDDLL, fooname);
+        foo = (F)GetProcAddress(hGetProcIDDLL, fooname);
         if (!foo)
         {   std::wcout << "ERROR: dll load "
                        << fooname  << " of \""
@@ -173,23 +163,28 @@ public:
     }
 
     ///------------------------------------------------------------------------|
-    void _create (const Cfg& _cfg) const
-    {     create_(           _cfg);
+    void _create (const Cfg& c) const
+    {     init( );
     }
 
-    Plot _step(const Plot&  last_step)
-    {   Plot   pzzz = step_(last_step);/////////////////////////////////////////
-        return pzzz;
+    Plot _step(const Plot& last_step)
+    {   int      x,    y;
+        step   (&x,   &y,  last_step.x, last_step.y);
+        return {size_t(x), size_t(y)};
+
     }
 
-    const wchar_t* _name  (                  ) const { return name_  (); }
-    void           _delete(                  ) const {        delete_(); }
+    const wchar_t* _name  (                  ) const { return name   (); }
+    void           _delete(                  ) const {        release(); }
     void           _stfish(const char FISHKA )
-    {      stfish_(FISHKA);
+    {
+        bool b = cfg.FISHKI[0] == FISHKA ?  true  : false;
+        new_game(cfg.WIDTH, cfg.HEIGHT, cfg.FWIN, b );
     }
 
-    void _sendplot (Plot  plot, char color) const
-    {     sendplot_(plot, color);
+    void _sendplot (Plot  plot, char FISHKA) const
+    {   bool b = cfg.FISHKI[0] == FISHKA ?  true  : false;
+        set_point(plot.x, plot.y, b);
     }
 
     const char* _get_interface_version() const
@@ -197,28 +192,27 @@ public:
     }
 
 public:
-
     static void testclass();
 };
-
 
 ///------------------------------|
 /// Тест.                        |
 ///------------------------------:
-inline void AI::testclass()
-{   TEST_START(AI)
+inline void AI_SmallEvil::testclass()
+{   TEST_START(AI_SmallEvil)
 
-    Field f;
+    Field  f;
+    auto   hinst = AI::get_hinst   ( "smallevil.dll");
+    AI_wrap*  ai = new AI_SmallEvil(L"smallevil.dll", hinst);
 
-    HINSTANCE hinst = AI_wrap::get_hinst("0.dll");
-    AI_wrap*  ai    = new AI(L"0.dll", hinst);
+    Plot plt{11, 22};
 
-    Plot plt{1, 1};
-
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
+        ai->_create  (cfg);
+        std::wcout << L"Получен ответ: " << ai->_step(plt) << '\n';
+        ai->_delete  (   );
+        ai->_stfish  (     cfg.FISHKI[0]);
+        ai->_sendplot(plt, cfg.FISHKI[0]);
+        std::wcout << ai->_get_interface_version()      << '\n';
 
     delete ai;
 
@@ -226,5 +220,4 @@ inline void AI::testclass()
 }
 
 
-
-#endif // AISHELL_H
+#endif // AISHELL_SE_H

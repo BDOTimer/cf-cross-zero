@@ -80,7 +80,8 @@
 
 1678543536 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\code\debug.h
 
-1678558487 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai_xlat.h
+1678772074 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai_xlat.h
+	"../../common/common.h"
 
 1678559135 e:\cb-2023\cf[cross-zero]\code\mylib.h
 	<chrono>
@@ -120,4 +121,81 @@
 	"../ai_cpp_dll/code/common.h"
 
 1678558487 e:\cb-2023\cf[cross-zero]\ai_cpp_dll\code\ai_xlat.h
+
+1678815742 source:c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\main.cpp
+	<iostream>
+	<iomanip>
+	<sstream>
+	<future>
+	<string>
+	<vector>
+	<map>
+	"file.h"
+	"mylib.h"
+	"mode.h"
+	"arbiter.h"
+	"../../ai_cpp_dll/code/ai_xlat.h"
+
+1678702753 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\file.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<vector>
+	<string>
+	"../../common/debug.h"
+
+1678817330 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\common\debug.h
+
+1678713754 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\mylib.h
+	"../../common/debug.h"
+
+1678707215 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\mode.h
+	<chrono>
+	<thread>
+	"mylib.h"
+
+1678794584 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\arbiter.h
+	"dll_maneger.h"
+	"game.h"
+
+1678820336 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\dll_maneger.h
+	<filesystem>
+	"aishell.h"
+	"vers/aishell_SmallEvil.h"
+
+1678826126 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\aishell.h
+	"../../common/common.h"
+	"statistics.h"
+	<windows.h>
+	"ai_wrap.h"
+
+1678785829 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\common\common.h
+	"configload.h"
+
+1678797829 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\common\configload.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<vector>
+	<string>
+	"debug.h"
+
+1678704271 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\statistics.h
+	"mylib.h"
+
+1678825715 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\ai_wrap.h
+
+1678825797 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\vers\aishell_smallevil.h
+	"../../../common/common.h"
+	"../statistics.h"
+	<windows.h>
+	"../ai_wrap.h"
+
+1678817624 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\game.h
+	"../../common/debug.h"
+	"mode.h"
+	"player.h"
+
+1678826052 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\player.h
+	"aishell.h"
 

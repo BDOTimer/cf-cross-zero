@@ -7,16 +7,19 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="bin\">
-				<Option output="../bin/0" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/smallevil" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="obj/" />
 				<Option type="3" />
-				<Option compiler="gcc" />
+				<Option compiler="msys_gcc-93" />
 				<Option projectCompilerOptionsRelation="-1" />
 				<Option projectLinkerOptionsRelation="-1" />
 				<Option projectIncludeDirsRelation="-1" />
-				<Option projectResourceIncludeDirsRelation="-1" />
 				<Option projectLibDirsRelation="-1" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-std=c++17" />
+				</Compiler>
 				<MakeCommands>
 					<Build command="" />
 					<CompileFile command="" />
@@ -27,12 +30,8 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="../common/common.h" />
-		<Unit filename="../common/configload.h" />
-		<Unit filename="../common/debug.h" />
+		<Unit filename="code/SmallEvil.dll.cpp" />
 		<Unit filename="code/ai.dll.h" />
-		<Unit filename="code/ai_xlat.h" />
-		<Unit filename="code/main.dll.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

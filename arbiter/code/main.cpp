@@ -14,16 +14,16 @@
 
 #include "file.h" /// НОВОЕ ...
 
-#pragma pack(push, 1)
+//#pragma pack(push, 1)
 
+bool DEBUG_DLL_RUNTIME = false;
 
-const wchar_t* NAME_ARBITER = L"ARBITER";
-
+const wchar_t* NAME_ARBITER             = L"ARBITER";
+bool           TYPE_IS_SERVER_OR_CLIENT = true      ;
 
 #include "mylib.h"
 #include "mode.h"
 #include "arbiter.h"
-
 
 ///---------------------------|
 /// Системное.                |
@@ -52,6 +52,8 @@ inline void tests()
 
   //Blacklist  ::testclass();
   //ConfigLoad::testclass<Cfg, Field>(cfg);
+
+  //AI_SmallEvil::testclass();
 }
 
 int main()
@@ -69,4 +71,4 @@ int main()
     mode.PAUSE_PRESS_ENTER_STRONG(L"Arbiter FINISHED.");
 }
 
-#pragma pack(pop)
+//#pragma pack(pop)
