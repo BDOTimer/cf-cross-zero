@@ -15,12 +15,12 @@ const char* INTERFACE_VERSION = "interface_version:se";
 /// ИИ.
 ///----------------------------------------------------------------------------:
 
-typedef void (__stdcall * init_t     )();
-typedef void (__stdcall * release_t  )();
-typedef void (__stdcall * new_game_t )(int w, int h, int chain, bool color);
-typedef void (__stdcall * set_point_t)(int x, int y, bool color);
-typedef void (__stdcall * step_t     )(int* x, int* y, int op_x, int op_y);
-typedef const wchar_t* (__stdcall * name_t                )();
+typedef void (__cdecl * init_t     )();
+typedef void (__cdecl * release_t  )();
+typedef void (__cdecl * new_game_t )(int w, int h, int chain, bool color);
+typedef void (__cdecl * set_point_t)(int x, int y, bool color);
+typedef void (__cdecl * step_t     )(int* x, int* y, int op_x, int op_y);
+typedef const wchar_t* (__cdecl * name_t                )();
 
 
 struct  AI_SmallEvil : public AI_wrap
