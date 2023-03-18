@@ -25,14 +25,14 @@ struct  Player
 
     void win_info()
     {   ai->stat.add_win();
-        std::wcout << L"Игрок " << name << L" ВЫИГРАЛ!\n";
+        myl::wcout << L"Игрок " << name << L" ВЫИГРАЛ!\n";
     }
 
     Plot step(const Plot last_step)
     {   if(ai != nullptr)
         {
-            Plot   plotwww = ai->_step(last_step);
-            return plotwww;
+            Plot   plot = ai->_step(last_step);
+            return plot;
         }
 
         /// TODO ...

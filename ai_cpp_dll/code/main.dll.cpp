@@ -12,9 +12,10 @@ const char* INTERFACE_VERSION = "interface_version:xlat";
 #include <string>
 #include <ctime>
 
-#include <iostream> /// c 150 кб до 1000 Kb DLL жиреет!
+//#include <iostream> /// c 150 кб до 1000 Kb DLL жиреет!
 
 //#pragma pack(push, 1)
+
 
 bool TYPE_IS_SERVER_OR_CLIENT = false;
 
@@ -37,8 +38,7 @@ extern "C"
 {
     DLLEXP void create_(const Cfg _cfg)
     {   cfg = _cfg;
-       pcfg = &cfg;
-       ai   = new AI();
+        ai  = new AI();
     }
 
     DLLEXP Plot step_(const Plot enemy_step)
@@ -56,6 +56,12 @@ extern "C"
 
     DLLEXP void sendplot_(Plot plot, char color)
     {   ai->field[plot.y][plot.x] = color;
+
+        if(DEBUG_DLL_RUNTIME)
+        {   myl::wcout << L"sendplot_:\n";
+            l(plot)
+            l(color)
+        }
     }
 
     DLLEXP const char* get_interface_version()
@@ -93,17 +99,17 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
     case DLL_PROCESS_DETACH:
         // detach from process
-        SomeFunction(auth + L" DLL_PROCESS_DETACH");
+        // SomeFunction(auth + L" DLL_PROCESS_DETACH");
         break;
 
     case DLL_THREAD_ATTACH:
         // attach to thread
-        SomeFunction(auth + L" DLL_THREAD_ATTACH");;
+        // SomeFunction(auth + L" DLL_THREAD_ATTACH");;
         break;
 
     case DLL_THREAD_DETACH:
         // detach from thread
-        SomeFunction(auth + L" + DLL_THREAD_DETACH");
+        // SomeFunction(auth + L" + DLL_THREAD_DETACH");
         break;
     }
     return TRUE; // succesful

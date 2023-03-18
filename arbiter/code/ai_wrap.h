@@ -14,7 +14,7 @@ struct  AI_wrap
         if(NULL  != hGetProcIDDLL)
         {   auto FreeResult  = FreeLibrary(hGetProcIDDLL);
             if ( FreeResult != 0)
-            {    std::cout  << "ERROR: FreeLibrary ...\n";
+            {    myl::wcout  << "ERROR: FreeLibrary ...\n";
             }
         }
     }
@@ -41,7 +41,7 @@ struct  AI_wrap
     {
         HINSTANCE _hGetProcIDDLL = LoadLibrary( _dllname);
         if (!_hGetProcIDDLL)
-        {   std::cout << "ERROR: Could not DLL ..." << std::endl;
+        {   myl::wcout << "ERROR: Could not DLL ..." << myl::endl;
             throw EXIT_FAILURE;
         }
         return _hGetProcIDDLL;
@@ -52,7 +52,7 @@ struct  AI_wrap
        (get_interface_version_t)GetProcAddress(hinst, "get_interface_version");
 
         if (!foo)
-        {   std::cout << "ERROR: dll load no version ,,," << std::endl;
+        {   myl::wcout << "ERROR: dll load no version ,,," << myl::endl;
             throw EXIT_FAILURE;
         }
         return foo();

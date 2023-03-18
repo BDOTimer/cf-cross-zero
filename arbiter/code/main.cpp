@@ -4,7 +4,7 @@
 /// C++17
 /// Исходник в UTF-8
 ///----------------------------------------------------------------------------|
-#include <iostream>
+//#include <iostream>
 #include <iomanip>
 #include <sstream>
 #include <future>
@@ -16,7 +16,6 @@
 
 //#pragma pack(push, 1)
 
-bool DEBUG_DLL_RUNTIME = false;
 
 const wchar_t* NAME_ARBITER             = L"ARBITER";
 bool           TYPE_IS_SERVER_OR_CLIENT = true      ;
@@ -35,6 +34,7 @@ struct  Sys
         }
 }sys;
 
+Mode mode;
 
 /// TODO ...
 ///-----------------------------------|
@@ -54,6 +54,8 @@ inline void tests()
   //ConfigLoad::testclass<Cfg, Field>(cfg);
 
   //AI_SmallEvil::testclass();
+
+  //myl::Wcout::testclass();
 }
 
 int main()
@@ -65,7 +67,7 @@ int main()
         Arbiter run;
     }
     catch(...)
-    {   std::wcout << L"EEE..." << std::endl;
+    {   myl::wcout << L"EEE..." << myl::endl;
     }
 
     mode.PAUSE_PRESS_ENTER_STRONG(L"Arbiter FINISHED.");

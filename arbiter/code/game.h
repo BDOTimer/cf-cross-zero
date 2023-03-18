@@ -42,11 +42,11 @@ struct  Game
     {   cntg++         ;
         steps       = 1;
         field.fclear ();
+        change_fishki();
         field.config_load.fishki2ai(a->ai);
         field.config_load.fishki2ai(b->ai);
-        change_fishki();
         set_names    ();
-        go();
+        go           ();
         mode.PAUSE_PRESS_ENTER_INFO();
     }
 
@@ -60,7 +60,9 @@ private:
     ///------------------------------:
     void go()
     {
-        std::wcout << L"Игра ...\n";
+        myl::wcout << L"Игра ...\n";
+
+        getchar();
 
         Plot last_step{stp::START_STEP};
 
@@ -73,7 +75,7 @@ private:
             ++steps;
         }
 
-        std::wcout << L"НИЧЬЯ\n";
+        myl::wcout << L"НИЧЬЯ\n";
 
         a->ai->stat.add_nob();
         b->ai->stat.add_nob();
@@ -104,10 +106,13 @@ private:
     /// Показать текущее Поле.       |
     ///------------------------------:
     void show()
-    {   std::system ("cls");
-        std::wcout << names;
-        std::wcout << "STEPS: " << std::setw(5) << myl::to_wstring(steps) << '\n';
-        std::cout  << field << std::endl;
+    {   mode.PAUSE_PRESS_ENTER_STEP();
+
+        std::system ("cls");
+        myl::wcout << names;
+        myl::wcout << "STEPS: "
+                   << std::to_wstring(steps) << '\n';
+        myl::wcout << field     << myl::endl;
         sleep(mode.TIME_PAUSE_STEPS);
     }
 
@@ -121,13 +126,12 @@ private:
         bool good = field.verification(last_step, a->ai->who().c_str());
         if (!good)
         {   /// TODO ...
-            std::wcout  << a->ai->who()
-                        << L" сфейлил ...\n" << std::endl;
+            myl::wcout  << a->ai->who()
+                        << L" сфейлил ...\n" << myl::endl;
 
             a->ai->stat.add_def();
             b->win_info        ();
 
-            mode.PAUSE_PRESS_ENTER_STRONG(L".");
             return true;
         }
 
@@ -143,7 +147,6 @@ private:
             return true;
         }
 
-        mode.PAUSE_PRESS_ENTER_STEP();
         return false;
 
     }

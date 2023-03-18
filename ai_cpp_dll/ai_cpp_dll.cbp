@@ -11,11 +11,10 @@
 				<Option working_dir="../bin" />
 				<Option object_output="obj/" />
 				<Option type="3" />
-				<Option compiler="gcc" />
+				<Option compiler="msys_gcc-93" />
 				<Option projectCompilerOptionsRelation="-1" />
 				<Option projectLinkerOptionsRelation="-1" />
 				<Option projectIncludeDirsRelation="-1" />
-				<Option projectResourceIncludeDirsRelation="-1" />
 				<Option projectLibDirsRelation="-1" />
 				<MakeCommands>
 					<Build command="" />
@@ -30,6 +29,7 @@
 		<Unit filename="../common/common.h" />
 		<Unit filename="../common/configload.h" />
 		<Unit filename="../common/debug.h" />
+		<Unit filename="../common/render.cpp" />
 		<Unit filename="code/ai.dll.h" />
 		<Unit filename="code/ai_xlat.h" />
 		<Unit filename="code/main.dll.cpp" />

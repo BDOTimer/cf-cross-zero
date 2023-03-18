@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="cb" />
+		<Option title="cb-Arbiter" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -11,7 +11,7 @@
 				<Option working_dir="../bin/" />
 				<Option object_output="obj/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="msys_gcc-93" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++17" />
@@ -22,9 +22,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../ai_cpp_dll/code/ai_xlat.h" />
 		<Unit filename="../common/common.h" />
 		<Unit filename="../common/configload.h" />
 		<Unit filename="../common/debug.h" />
+		<Unit filename="../common/render.cpp" />
+		<Unit filename="../common/render.h" />
 		<Unit filename="code/ai_wrap.h" />
 		<Unit filename="code/aishell.h" />
 		<Unit filename="code/arbiter.h" />

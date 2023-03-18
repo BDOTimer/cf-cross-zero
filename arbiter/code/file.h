@@ -4,9 +4,9 @@
 /// "file.h"
 ///----------------------------------------------------------------------------|
 /// Тест.
-#include <iostream>
+//#include <iostream>
 #include <fstream>
-#include <sstream>
+//#include <sstream>
 #include <vector>
 #include <string>
 
@@ -18,7 +18,7 @@
 struct  Blacklist
 {       Blacklist() : file_name_blist("blacklist.txt")
         {
-            std::wcout << L"ЗАГРУЗКА Blacklist ...\n";
+            myl::wcout << L"ЗАГРУЗКА Blacklist ...\n";
 
             std::ifstream f(file_name_blist);
             if(f.is_open())
@@ -58,7 +58,7 @@ inline void Blacklist::testclass()
                 bl.add("aaa.dll");
                 bl.add("bbb.dll");
 
-    std::cout << (bl.is_this_file_fail("aaa.dll") ? "FAIL" : "GOOD") << '\n';
+    myl::wcout << (bl.is_this_file_fail("aaa.dll") ? "FAIL" : "GOOD") << '\n';
 
     TEST_FINISHED;
 }

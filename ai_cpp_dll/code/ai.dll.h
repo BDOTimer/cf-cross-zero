@@ -1,6 +1,7 @@
 #ifndef AI_DLL_H
 #define AI_DLL_H
 
+#include "../../common/render.h"
 #include "../../common/common.h"
 
 ///----------------------------------------------------------------------------|
@@ -14,8 +15,8 @@ const bool DEBUG_DLL_RUNTIME = false;
 ///------------------------------------|
 /// ...                                |
 ///------------------------------------:
-//const wchar_t* authorname = L"Глупыш";
-const wchar_t* authorname = L"Дебил";
+const wchar_t* authorname = L"Глупыш";
+//const wchar_t* authorname = L"Дебил";
 //const wchar_t* authorname = L"АфторРэнд";
 
 
@@ -23,7 +24,8 @@ struct Rand
 {   Rand(            ){   srand((unsigned)time(0));}
     Rand(unsigned sid){   srand(sid);              }
     int  operator   ()(int range_min, int range_max)   const
-    {   return rand () %  (range_max -    range_min) + range_min;
+    {   ASSERT(range_min < range_max)
+        return rand () %  (range_max -    range_min) + range_min;
     }
 }rrand;
 
@@ -71,15 +73,16 @@ struct  AI
         ///--------------------...
         while(true)
         {
-                 p.x = rrand(0, field.W);
-                 p.y = rrand(0, field.H);
+            p.x = rrand(0, field.W);
+            p.y = rrand(0, field.H);
 
             if( field.verification_no_info(p))
             {   field[p.y][p.x] = FISHKA;
 
                 if(DEBUG_DLL_RUNTIME)
-                {   std::wcout << authorname << L" сделал ход: " << p << '\n';
-                    std::cin.get();
+                {   myl::wcout << authorname << L" сделал ход: " << p << ":\n";
+                    myl::wcout  << field      << myl::endl;
+                    myl::cin.get();
                 }
 
                 return p;
@@ -112,8 +115,8 @@ private:
         {   field[last_step.y][last_step.x] = FISHKA_ENEMY;
 
             if(DEBUG_DLL_RUNTIME)
-            {   std::wcout  << authorname  << L" состояние доски:\n";
-                std::cout   << field       << std::endl;
+            {   myl::wcout  << authorname  << L" состояние доски до хода:\n";
+                myl::wcout   << field       << myl::endl;
             }
         }
         else
@@ -125,14 +128,14 @@ private:
             {   //wprintf(L"%s %s", authorname, L"ходит первым.");
 
                 if(DEBUG_DLL_RUNTIME)
-                {   std::wcout  << authorname  << L" ходит первым.\n";
-                    std::wcout  << L"Состояние доски:\n";
-                    std::cout   << field       << std::endl;
+                {   myl::wcout  << authorname  << L" ходит первым.\n";
+                    myl::wcout  << L"Состояние доски:\n";
+                    myl::wcout   << field      << myl::endl;
                 }
             }
             else
             {   printf("ERROR in dll ...");
-                std::cin.get();
+                myl::cin.get();
             }
         }
     }

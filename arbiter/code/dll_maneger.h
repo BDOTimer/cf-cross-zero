@@ -19,10 +19,10 @@ struct  FindDLL
 
 
     void info()
-    {   std::wcout << L"\nНайдены DLL: " << dllnames.size() << '\n';
+    {   myl::wcout << L"\nНайдены DLL: " << dllnames.size() << '\n';
         for(const auto& name : dllnames)
-        {   std::wcout << L"  " << name << '\n';
-        }   std::wcout                  << '\n';
+        {   myl::wcout << L"  " << name << '\n';
+        }   myl::wcout                  << '\n';
     }
 
     const std::vector<std::wstring>& get(){ return dllnames; }
@@ -67,15 +67,15 @@ struct  DLL_manager
     }
 
     void info()
-    {   std::wcout << L"УЧАСТНИКИ ЗАБЕГА:\n";
+    {   myl::wcout << L"УЧАСТНИКИ ЗАБЕГА:\n";
         int cnt = 0;
         for(const auto& ai : aibots)
-        {   std::wcout << L"  "
-                       << std::setw( 3) << ++cnt << ".  "
+        {   myl::wcout << L"  "
+                       << ++cnt << ".  "
                        << ai->who()     << ",  "
                        << ai->_get_interface_version()
                        << '\n';
-        }   std::wcout << std::endl;
+        }   myl::wcout << myl::endl;
     }
 
     const std::vector<AI_wrap*>& get_aibots() const
@@ -147,8 +147,8 @@ private:
         /// Каждая пара играет две игры. |
         /// (сначала ходит 1, потом 2)   |
         ///------------------------------:
-        std::wcout << L"Ожидается всего спарингов: "
-                   << tab.size() * 2 << std::endl;
+        myl::wcout << L"Ожидается всего спарингов: "
+                   << tab.size() * 2 << myl::endl;
     }
 
 public:

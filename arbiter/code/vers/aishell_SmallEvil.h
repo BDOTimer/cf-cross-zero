@@ -154,10 +154,10 @@ public:
     {
         foo = (F)GetProcAddress(hGetProcIDDLL, fooname);
         if (!foo)
-        {   std::wcout << "ERROR: dll load "
+        {   myl::wcout << "ERROR: dll load "
                        << fooname  << " of \""
                        << dllnamew << "\""
-                       << std::endl;
+                       << myl::endl;
             throw EXIT_FAILURE;
         }
     }
@@ -208,11 +208,11 @@ inline void AI_SmallEvil::testclass()
     Plot plt{11, 22};
 
         ai->_create  (cfg);
-        std::wcout << L"Получен ответ: " << ai->_step(plt) << '\n';
+        myl::wcout << L"Получен ответ: " << ai->_step(plt) << '\n';
         ai->_delete  (   );
         ai->_stfish  (     cfg.FISHKI[0]);
         ai->_sendplot(plt, cfg.FISHKI[0]);
-        std::wcout << ai->_get_interface_version()      << '\n';
+        myl::wcout << ai->_get_interface_version()      << '\n';
 
     delete ai;
 

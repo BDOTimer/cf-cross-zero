@@ -43,10 +43,10 @@ struct  AI_xlat
         {
             for(const auto& e   : row)
             {
-                if(e.data != nullptr) std::cout << *e.data;
-                else                  std::cout << '$';
-            }   std::cout << '\n';
-        }       std::cout << '\n';
+                if(e.data != nullptr) myl::wcout << *e.data;
+                else                  myl::wcout << '$';
+            }   myl::wcout << '\n';
+        }       myl::wcout << '\n';
     }
 
 

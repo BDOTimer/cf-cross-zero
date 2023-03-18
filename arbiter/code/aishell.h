@@ -164,10 +164,10 @@ public:
     {
              foo = (F)GetProcAddress(hGetProcIDDLL, fooname);
         if (!foo)
-        {   std::wcout << "ERROR: dll load "
+        {   myl::wcout << "ERROR: dll load "
                        << fooname  << " of \""
                        << dllnamew << "\""
-                       << std::endl;
+                       << myl::endl;
             throw EXIT_FAILURE;
         }
     }
@@ -205,7 +205,7 @@ public:
 ///------------------------------|
 /// Тест.                        |
 ///------------------------------:
-inline void AI::testclass()
+inline    void AI::testclass()
 {   TEST_START(AI)
 
     Field f;
@@ -215,10 +215,10 @@ inline void AI::testclass()
 
     Plot plt{1, 1};
 
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
+        myl::wcout << ai->_step(plt) << '\n';
+        myl::wcout << ai->_step(plt) << '\n';
+        myl::wcout << ai->_step(plt) << '\n';
+        myl::wcout << ai->_step(plt) << '\n';
 
     delete ai;
 

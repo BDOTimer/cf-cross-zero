@@ -9,7 +9,7 @@
 extern bool TYPE_IS_SERVER_OR_CLIENT;
 
 #ifndef l
-    #define l(v) std::wcout << #v << " = " << (v) << '\n' ;
+    #define l(v) myl::wcout << #v << " = " << (v) << '\n' ;
 #endif // l
 
 #include "configload.h"
@@ -32,7 +32,8 @@ struct  Cfg
 
 const char EMPTY = '.';
 
-std::wostream& operator<<(std::wostream& o, const Cfg& c)
+template<typename T>
+T& operator<<(T& o, const Cfg& c)
 {   o   << L"КОНФИГ ---------------------------:\n"
         << "   FWIN      = " << c.FWIN      << '\n'
         << "   WIDTH     = " << c.WIDTH     << '\n'
@@ -56,7 +57,8 @@ struct Plot
 };
 
 
-std::wostream& operator<<(std::wostream& o, const Plot& p)
+template<typename T>
+T& operator<<(T& o, const Plot& p)
 {          o << "{ " << p.x << ", " << p.y << " }";
     return o;
 }
@@ -134,7 +136,7 @@ struct  Field   : std::vector<std::string>
 
     void fclear()
     {
-        if(!config_load.error)
+        if(TYPE_IS_SERVER_OR_CLIENT)
         {
             m = config_load.get_data();
 
@@ -163,14 +165,14 @@ struct  Field   : std::vector<std::string>
 
     void debug() const
     {   size_t cnt = 0;
-        std::wcout << L" ... сначала горизонтали:\n";
+        myl::wcout << L" ... сначала горизонтали:\n";
         for(const auto& s : get_all_str())
-        {   if(    H == cnt  ) std::wcout << L" ... теперь вертикали:\n";
-            if(W + H == cnt++) std::wcout << L" ... теперь диагонали:\n";
+        {   if(    H == cnt  ) myl::wcout << L" ... теперь вертикали:\n";
+            if(W + H == cnt++) myl::wcout << L" ... теперь диагонали:\n";
 
-            std::cout << s << '\n';
+            myl::wcout << s << '\n';
         }
-        std::cout      << '\n';
+        myl::wcout      << '\n';
     }
 
     bool verification(const Plot& p, const wchar_t* name) const
@@ -181,16 +183,16 @@ struct  Field   : std::vector<std::string>
             {   /// std::wcout << "mss::START_STEP" << endl;
             }
             else if(p.x >= W && p.y >= H)
-            {   std::wcout << L"FAIL: Ход за пределами поля! "
-                           << name << std::endl;
+            {   myl::wcout << L"FAIL: Ход за пределами поля! "
+                           << name << myl::endl;
                 l(p.x)
                 l(p.y)
                 l(W)
                 l(H)
             }
             else if(m[p.y][p.x] != EMPTY)
-            {   std::wcout << L"FAIL: Ход на занятую клетку! "
-                           << name << std::endl;
+            {   myl::wcout << L"FAIL: Ход на занятую клетку! "
+                           << name << myl::endl;
                 l(p.x)
                 l(p.y)
             }
@@ -281,7 +283,8 @@ public:
     static void testclass();
 };
 
-std::ostream& operator<<(std::ostream& o, Field& f)
+template<typename T>
+T& operator<<(T& o, Field& f)
 {
     std::string line(f.W+2, '-');
     o << line << '\n';
@@ -302,14 +305,14 @@ std::ostream& operator<<(std::ostream& o, Field& f)
 /// GHI
 ///------------------------------:
 void Field::testclass()
-{   std::wcout << L"Тест:\n";
+{   TEST_START(Field);
+
     Field f;
 
     f.fill_for_test();
     f.debug        ();
 
-    std::wcout << "TEST FINSHED!\n";
-    std::cin.get();
+    TEST_FINISHED;
 }
 
 #endif // COMMON_H
