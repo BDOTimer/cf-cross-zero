@@ -3,7 +3,7 @@
 ///----------------------------------------------------------------------------|
 /// "ai_wrap.h"
 ///----------------------------------------------------------------------------|
-typedef const char*(__stdcall * get_interface_version_t)();
+typedef const char*(__cdecl * _get_interface_version_t)();
 
 
 struct  AI_wrap
@@ -14,18 +14,18 @@ struct  AI_wrap
         if(NULL  != hGetProcIDDLL)
         {   auto FreeResult  = FreeLibrary(hGetProcIDDLL);
             if ( FreeResult != 0)
-            {    std::cout  << "ERROR: FreeLibrary ...\n";
+            {    myl::wcout  << "ERROR: FreeLibrary ...\n";
             }
         }
     }
 
-    virtual const wchar_t* _name                 (                      ) const= 0;
-    virtual Plot           _step                 (const Plot&           ) = 0;
-    virtual void           _create               (const Cfg&            ) const= 0;
-    virtual void           _delete               (                      ) const= 0;
-    virtual void           _stfish               (const char FISHKA     )      = 0;
-    virtual void           _sendplot             (Plot  plot, char color) const= 0;
-    virtual const char*    _get_interface_version(                      ) const= 0;
+    virtual const wchar_t* v_name                 (                      ) const= 0;
+    virtual Plot           v_step                 (const Plot&           ) = 0;
+    virtual void           v_create               (const Cfg&            ) const= 0;
+    virtual void           v_delete               (                      ) const= 0;
+    virtual void           v_stfish               (const char FISHKA     )      = 0;
+    virtual void           v_sendplot             (Plot  plot, char color) const= 0;
+    virtual const char*    v_get_interface_version(                      ) const= 0;
 
     virtual const char get_FISHKA  ()     const = 0;
     virtual const std::wstring& who()     const = 0;
@@ -39,20 +39,20 @@ struct  AI_wrap
 
     static HINSTANCE get_hinst(const char* _dllname)
     {
-        HINSTANCE _hGetProcIDDLL = LoadLibrary( _dllname);
+        HINSTANCE _hGetProcIDDLL = LoadLibraryA( _dllname);
         if (!_hGetProcIDDLL)
-        {   std::cout << "ERROR: Could not DLL ..." << std::endl;
+        {   myl::wcout << "ERROR: Could not DLL ..." << myl::endl;
             throw EXIT_FAILURE;
         }
         return _hGetProcIDDLL;
     }
 
     static const char* get_version(HINSTANCE hinst)
-    {   get_interface_version_t foo =
-       (get_interface_version_t)GetProcAddress(hinst, "get_interface_version");
+    {   _get_interface_version_t foo =
+       (_get_interface_version_t)GetProcAddress(hinst, "_get_interface_version");
 
         if (!foo)
-        {   std::cout << "ERROR: dll load no version ,,," << std::endl;
+        {   myl::wcout << "ERROR: dll load no version ,,," << myl::endl;
             throw EXIT_FAILURE;
         }
         return foo();

@@ -14,13 +14,12 @@ const char* INTERFACE_VERSION = "interface_version:se";
 ///----------------------------------------------------------------------------|
 /// ИИ.
 ///----------------------------------------------------------------------------:
-
 typedef void (__cdecl * init_t     )();
 typedef void (__cdecl * release_t  )();
-typedef void (__cdecl * new_game_t )(int w, int h, int chain, bool color);
-typedef void (__cdecl * set_point_t)(int x, int y, bool color);
-typedef void (__cdecl * step_t     )(int* x, int* y, int op_x, int op_y);
-typedef const wchar_t* (__cdecl * name_t                )();
+typedef void (__cdecl * new_game_t )(int  w, int  h, int  chain , bool color);
+typedef void (__cdecl * set_point_t)(int  x, int  y, bool color);
+typedef void (__cdecl * step_t     )(int* x, int* y, int  op_x  , int op_y);
+typedef const wchar_t * (__cdecl * name_t)();
 
 
 struct  AI_SmallEvil : public AI_wrap
@@ -30,9 +29,9 @@ struct  AI_SmallEvil : public AI_wrap
             {   hGetProcIDDLL = hinst;
 
                 load_dll(   );
-                _create (cfg);
+                v_create (cfg);
 
-                nm_dllname  = std::wstring(_name());
+                nm_dllname  = std::wstring(v_name());
             }
             catch(...)
             {   error = true; return;
@@ -112,7 +111,7 @@ struct  AI_SmallEvil : public AI_wrap
     void set_FISHKA(const char fishka)
     {
         FISHKA = fishka;
-        _stfish(fishka);
+        v_stfish(fishka);
     }
 
     const char get_FISHKA  () const { return FISHKA    ; }
@@ -126,26 +125,26 @@ private:
 private:
 
     /// smallevel
-    init_t                  init                 ;
-    release_t               release              ;
-    new_game_t              new_game             ;
-    set_point_t             set_point            ;
-    step_t                  step                 ;
-    name_t                  name                 ;
-    get_interface_version_t get_interface_version;
+    init_t                   _init                 ;
+    release_t                _release              ;
+    new_game_t               _new_game             ;
+    set_point_t              _set_point            ;
+    step_t                   _step                 ;
+    name_t                   _name                 ;
+    _get_interface_version_t _get_interface_version;
 
 
 public:
     #define GET_PROC_ADDRESS(V) get_proc_address(V, #V)
     void load_dll()
     {
-        GET_PROC_ADDRESS(name     );
-        GET_PROC_ADDRESS(init     );
-        GET_PROC_ADDRESS(release  );
-        GET_PROC_ADDRESS(new_game );
-        GET_PROC_ADDRESS(set_point);
-        GET_PROC_ADDRESS(step     );
-        GET_PROC_ADDRESS(get_interface_version);
+        GET_PROC_ADDRESS(_name     );
+        GET_PROC_ADDRESS(_init     );
+        GET_PROC_ADDRESS(_release  );
+        GET_PROC_ADDRESS(_new_game );
+        GET_PROC_ADDRESS(_set_point);
+        GET_PROC_ADDRESS(_step     );
+        GET_PROC_ADDRESS(_get_interface_version);
     }
     #undef GET_PROC_ADDRESS
 
@@ -154,41 +153,41 @@ public:
     {
         foo = (F)GetProcAddress(hGetProcIDDLL, fooname);
         if (!foo)
-        {   std::wcout << "ERROR: dll load "
+        {   myl::wcout << "ERROR: dll load "
                        << fooname  << " of \""
                        << dllnamew << "\""
-                       << std::endl;
+                       << myl::endl;
             throw EXIT_FAILURE;
         }
     }
 
     ///------------------------------------------------------------------------|
-    void _create (const Cfg& c) const
-    {     init( );
+    void v_create (const Cfg& c) const
+    {     _init( );
     }
 
-    Plot _step(const Plot& last_step)
+    Plot v_step(const Plot& last_step)
     {   int      x,    y;
-        step   (&x,   &y,  last_step.x, last_step.y);
+        _step   (&x,   &y,  last_step.x, last_step.y);
         return {size_t(x), size_t(y)};
 
     }
 
-    const wchar_t* _name  (                  ) const { return name   (); }
-    void           _delete(                  ) const {        release(); }
-    void           _stfish(const char FISHKA )
+    const wchar_t* v_name  (                  ) const { return _name   (); }
+    void           v_delete(                  ) const {        _release(); }
+    void           v_stfish(const char FISHKA )
     {
         bool b = cfg.FISHKI[0] == FISHKA ?  true  : false;
-        new_game(cfg.WIDTH, cfg.HEIGHT, cfg.FWIN, b );
+        _new_game(cfg.WIDTH, cfg.HEIGHT, cfg.FWIN, b );
     }
 
-    void _sendplot (Plot  plot, char FISHKA) const
+    void v_sendplot (Plot  plot, char FISHKA) const
     {   bool b = cfg.FISHKI[0] == FISHKA ?  true  : false;
-        set_point(plot.x, plot.y, b);
+        _set_point(plot.x, plot.y, b);
     }
 
-    const char* _get_interface_version() const
-    {   return   get_interface_version();
+    const char* v_get_interface_version() const
+    {   return   _get_interface_version();
     }
 
 public:
@@ -207,12 +206,12 @@ inline void AI_SmallEvil::testclass()
 
     Plot plt{11, 22};
 
-        ai->_create  (cfg);
-        std::wcout << L"Получен ответ: " << ai->_step(plt) << '\n';
-        ai->_delete  (   );
-        ai->_stfish  (     cfg.FISHKI[0]);
-        ai->_sendplot(plt, cfg.FISHKI[0]);
-        std::wcout << ai->_get_interface_version()      << '\n';
+        ai->v_create  (cfg);
+        myl::wcout << L"Получен ответ: " << ai->v_step(plt) << '\n';
+        ai->v_delete  (   );
+        ai->v_stfish  (     cfg.FISHKI[0]);
+        ai->v_sendplot(plt, cfg.FISHKI[0]);
+        myl::wcout << ai->v_get_interface_version()      << '\n';
 
     delete ai;
 

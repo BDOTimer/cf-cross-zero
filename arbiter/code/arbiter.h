@@ -37,7 +37,7 @@ private:
             game.run_second();
         }
 
-        std::wcout << L"ТУРНИР ЗАВЕРШЕН!\n\n";
+        myl::wcout << L"ТУРНИР ЗАВЕРШЕН!\n\n";
 
         show_raiting();
     }
@@ -76,7 +76,7 @@ private:
     /// Показать рейтинг.            |
     ///------------------------------:
     void show_raiting()
-    {   std::wcout << L"ИТОГОВАЯ ТАБЛИЦА РЕЙТИНГОВ!\n";
+    {   myl::wcout << L"ИТОГОВАЯ ТАБЛИЦА РЕЙТИНГОВ!\n";
 
         std::multimap<int, AI_wrap*, std::greater<>> m;
 
@@ -86,7 +86,7 @@ private:
 
         int cnt = 0;
         for(const auto&[r,  ai] : m)
-        {   std::wcout << ++cnt              << ". "
+        {   myl::wcout << ++cnt              << ". "
                        << ai->stat.get_str() << L" -> "
                        << ai->who         () << '\n';
         }

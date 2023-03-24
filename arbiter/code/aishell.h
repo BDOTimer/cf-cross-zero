@@ -13,13 +13,14 @@
 /// ИИ.
 ///----------------------------------------------------------------------------:
 ///  __cdecl  для VS
-/// __stdcall для GCC ?
+/// __stdcall ???
 typedef const wchar_t*(__cdecl * _name_t    )(                        );
 typedef Plot          (__cdecl * _step_t    )(const Plot last_step    );
 typedef void          (__cdecl * _create_t  )(const Cfg  cfg          );
 typedef void          (__cdecl * _delete_t  )(                        );
 typedef void          (__cdecl * _stfish_t  )(char  FISHKA            );
 typedef void          (__cdecl * _sendplot_t)(Plot  plot, char color  );
+//typedef const char *(__cdecl * _get_interface_version_t)(           );
 
 
 struct  AI : public AI_wrap
@@ -29,7 +30,7 @@ struct  AI : public AI_wrap
             try
             {   hGetProcIDDLL = hinst;
                 load_dll(   );
-                _create (cfg);
+                v_create (cfg);
 
                 /*
                  *  std::wcout << L"DLL load GOOD!\n";
@@ -37,7 +38,11 @@ struct  AI : public AI_wrap
                  *             << _name() << std::endl;
                  */
 
-                nm_dllname  = std::wstring(_name());
+                nm_dllname  = std::wstring(v_name());
+            }
+            catch(const std::exception& e)
+            {   myl::wcout << e.what() << myl::endl;
+                error = true; return;
             }
             catch(...)
             {   error = true; return;
@@ -124,7 +129,7 @@ struct  AI : public AI_wrap
     void set_FISHKA(const char fishka)
     {
         FISHKA = fishka;
-        _stfish(fishka);
+        v_stfish(fishka);
     }
 
     const char get_FISHKA  () const { return FISHKA    ; }
@@ -136,26 +141,26 @@ private:
     std::wstring   dllnamew;
 
 private:
-    _name_t                               name_    ;
-    _step_t                               step_    ;
-    _create_t                             create_  ;
-    _delete_t                             delete_  ;
-    _stfish_t                             stfish_  ;
-    _sendplot_t                           sendplot_;
-     get_interface_version_t get_interface_version ;
+    _name_t                               _name    ;
+    _step_t                               _step    ;
+    _create_t                             _create  ;
+    _delete_t                             _delete  ;
+    _stfish_t                             _stfish  ;
+    _sendplot_t                           _sendplot;
+    _get_interface_version_t _get_interface_version;
 
 
 public:
     #define GET_PROC_ADDRESS(V) get_proc_address(V, #V)
     void load_dll()
     {
-        GET_PROC_ADDRESS(name_    );
-        GET_PROC_ADDRESS(step_    );
-        GET_PROC_ADDRESS(create_  );
-        GET_PROC_ADDRESS(delete_  );
-        GET_PROC_ADDRESS(stfish_  );
-        GET_PROC_ADDRESS(sendplot_);
-        GET_PROC_ADDRESS(get_interface_version);
+        GET_PROC_ADDRESS(_name    );
+        GET_PROC_ADDRESS(_step    );
+        GET_PROC_ADDRESS(_create  );
+        GET_PROC_ADDRESS(_delete  );
+        GET_PROC_ADDRESS(_stfish  );
+        GET_PROC_ADDRESS(_sendplot);
+        GET_PROC_ADDRESS(_get_interface_version);
     }
     #undef GET_PROC_ADDRESS
 
@@ -164,36 +169,36 @@ public:
     {
              foo = (F)GetProcAddress(hGetProcIDDLL, fooname);
         if (!foo)
-        {   std::wcout << "ERROR: dll load "
+        {   myl::wcout << "ERROR: dll load "
                        << fooname  << " of \""
                        << dllnamew << "\""
-                       << std::endl;
-            throw EXIT_FAILURE;
+                       << myl::endl;
+            throw ERROR_EXCEPTION_MESS(" qwerty");
         }
     }
 
     ///------------------------------------------------------------------------|
-    void _create (const Cfg& _cfg) const
-    {     create_(           _cfg);
+    void v_create(const Cfg& _cfg) const
+    {     _create(           _cfg);
     }
 
-    Plot _step(const Plot&  last_step)
-    {   Plot   pzzz = step_(last_step);/////////////////////////////////////////
+    Plot v_step(const Plot&  last_step)
+    {   Plot   pzzz = _step(last_step);/////////////////////////////////////////
         return pzzz;
     }
 
-    const wchar_t* _name  (                  ) const { return name_  (); }
-    void           _delete(                  ) const {        delete_(); }
-    void           _stfish(const char FISHKA )
-    {      stfish_(FISHKA);
+    const wchar_t* v_name  (                  ) const { return _name  (); }
+    void           v_delete(                  ) const {        _delete(); }
+    void           v_stfish(const char FISHKA )
+    {      _stfish(FISHKA);
     }
 
-    void _sendplot (Plot  plot, char color) const
-    {     sendplot_(plot, color);
+    void v_sendplot (Plot  plot, char color) const
+    {     _sendplot(plot, color);
     }
 
-    const char* _get_interface_version() const
-    {   return   get_interface_version();
+    const char* v_get_interface_version() const
+    {   return   _get_interface_version();
     }
 
 public:
@@ -205,7 +210,7 @@ public:
 ///------------------------------|
 /// Тест.                        |
 ///------------------------------:
-inline void AI::testclass()
+inline    void AI::testclass()
 {   TEST_START(AI)
 
     Field f;
@@ -215,10 +220,10 @@ inline void AI::testclass()
 
     Plot plt{1, 1};
 
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
-        std::wcout << ai->_step(plt) << '\n';
+        myl::wcout << ai->v_step(plt) << '\n';
+        myl::wcout << ai->v_step(plt) << '\n';
+        myl::wcout << ai->v_step(plt) << '\n';
+        myl::wcout << ai->v_step(plt) << '\n';
 
     delete ai;
 

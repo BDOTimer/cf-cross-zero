@@ -3,20 +3,21 @@
 ///----------------------------------------------------------------------------|
 /// "configload.h"
 ///----------------------------------------------------------------------------|
-#include <iostream>
+//#include <iostream>
 #include <fstream>
-#include <sstream>
+//#include <sstream>
 #include <vector>
 #include <string>
 
 #include "debug.h"
+#include "render.h"
 
 ///----------------------------------------------------------------------------|
 /// myLib
 ///----------------------------------------------------------------------------|
 template<typename T>
 void info(const T& v)
-{   for(const auto& e : v) std::cout << e << '\n'; std::cout << std::endl;
+{   for(const auto& e : v) myl::wcout << e << '\n'; myl::wcout << myl::endl;
 }
 
 
@@ -40,7 +41,7 @@ struct  ConfigLoad
         {
             if(!TYPE_IS_SERVER_OR_CLIENT) return;
 
-            std::wcout << L"ЗАГРУЗКА КОНФИГА ...\n";
+            myl::wcout << L"ЗАГРУЗКА КОНФИГА ...\n";
 
             std::ifstream f(file_name);
             if(f.is_open())
@@ -50,7 +51,7 @@ struct  ConfigLoad
                 }
             }
             else
-            {   std::cout << "MESSAGE: CONFIG_FILE_ABSENT\n";
+            {   myl::wcout << "MESSAGE: CONFIG_FILE_ABSENT\n";
             }
         }
 
@@ -86,8 +87,8 @@ struct  ConfigLoad
             const size_t A = (size_t)ready.v[3][0];
             const size_t B = (size_t)ready.v[4][0];
 
-            if( 32 > A && A > 128) throw ERROR_EXCEPTION;
-            if( 32 > B && B > 128) throw ERROR_EXCEPTION;
+            if( 32 > A || A > 128) throw ERROR_EXCEPTION;
+            if( 32 > B || B > 128) throw ERROR_EXCEPTION;
 
             config.FWIN      = F;
             config.HEIGHT    = H;
@@ -99,7 +100,7 @@ struct  ConfigLoad
             O = ready.v[4][0];
         }
         catch(const CustomException& e)
-        {   std::cout << e.what() << '\n';
+        {   myl::wcout << e.what() << '\n';
             return error;
         }
 
@@ -157,7 +158,7 @@ struct  ConfigLoad
         for     (size_t h = 0; h < H; ++h)
         {   for (size_t w = 0; w < W; ++w)
             {   if (data[h][w] != '.')
-                {   ai->_sendplot({w, h}, data[h][w]);
+                {   ai->v_sendplot({w, h}, data[h][w]);
                 }
             }
         }
@@ -180,25 +181,25 @@ private:
                 else if(c == O) ++cntO;
                 else if(c != '.')
                 {
-                    std::wcout << L"ERROR: Неизвестный символ в конфиге.\n";
-                    std::cin.get();
+                    myl::wcout << L"ERROR: Неизвестный символ в конфиге.\n";
+                    myl::cin.get();
                     return ERR_;
                 }
             }
         }
 
         if(cntX < cntO)
-        {   std::wcout << L"ERROR: Белых больше чем черных!\n";
-            std::cin.get();
+        {   myl::wcout << L"ERROR: Белых больше чем черных!\n";
+            myl::cin.get();
             return ERR_;
         }
         else if(cntX - cntO > 1)
-        {   std::wcout << L"ERROR: Черных слишком много!\n";
-            std::cin.get();
+        {   myl::wcout << L"ERROR: Черных слишком много!\n";
+            myl::cin.get();
             return ERR_;
         }
 
-        std::wcout << L"КОНФИГ: Ошибок не найдено.\n";
+        myl::wcout << L"КОНФИГ: Ошибок не найдено.\n";
 
         return cntX + cntO;
     }
@@ -211,7 +212,7 @@ public:
 /// Тест.                        |
 ///------------------------------:
 template<typename tC, typename tF>
-inline void ConfigLoad::testclass(tC& cfg)
+inline    void ConfigLoad::testclass(tC& cfg)
 {   TEST_START(ConfigLoad);
 
     tF f;
@@ -220,11 +221,11 @@ inline void ConfigLoad::testclass(tC& cfg)
                 pregame.get_config(cfg);
                 pregame.get_field (cfg, f);
 
-    std::wcout << cfg << "\n\n";
+    myl::wcout << cfg << "\n\n";
 
     f.debug();
 
-    std::cout << f << '\n';
+    myl::wcout << f << '\n';
 
     TEST_FINISHED;
 }

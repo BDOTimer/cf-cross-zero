@@ -199,3 +199,12 @@
 1678826052 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\arbiter\code\player.h
 	"aishell.h"
 
+1679074202 source:c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\common\render.cpp
+	<locale>
+	<string>
+	<vector>
+	"render.h"
+
+1679074202 c:\!zavod-2020\projects\cb-2023\cf[cross-zero]\common\render.h
+	<stdio.h>
+

@@ -6,13 +6,9 @@
 /// Общий хедер для Arbiter и aiDLL.
 ///----------------------------------------------------------------------------|
 
-extern bool TYPE_IS_SERVER_OR_CLIENT;
+#define  l(v)  std::wcout << #v << L" = " << v << L"\n";
+#define ll(v)  std::cout  << #v <<  " = " << v << "\n";
 
-#ifndef l
-    #define l(v) myl::wcout << #v << " = " << (v) << '\n' ;
-#endif // l
-
-#include "configload.h"
 
 ///----------|
 /// Конфиг.  |
@@ -22,25 +18,23 @@ struct  Cfg
     ///-----------------------------|
     /// Количество фишек для победы.|
     ///-----------------------------:
-    size_t FWIN   =   5;
-    size_t WIDTH  =  30; /// Размер поля по горизонтали.
-    size_t HEIGHT =  20; /// Размер поля по вертикали.
+    size_t FWIN   =  5;
+    size_t WIDTH  = 10; /// Размер поля по горизонтали.
+    size_t HEIGHT =  5; /// Размер поля по вертикали.
     ///-----------------------------.
 
     char FISHKI[2]{'X', 'O'};
+
 };
 
-const char EMPTY = '.';
-
-template<typename T>
-T& operator<<(T& o, const Cfg& c)
-{   o   << L"КОНФИГ ---------------------------:\n"
-        << "   FWIN      = " << c.FWIN      << '\n'
-        << "   WIDTH     = " << c.WIDTH     << '\n'
-        << "   HEIGHT    = " << c.HEIGHT    << '\n'
-        << "   FISHKI[0] = " << c.FISHKI[0] << '\n'
-        << "   FISHKI[1] = " << c.FISHKI[1] << '\n'
-        << std::endl;
+std::wostream& operator<<(std::wostream& o, const Cfg& c)
+{   std::wcout << L"КОНФИГ --------------:\n";
+    l(c.FWIN)
+    l(c.WIDTH)
+    l(c.HEIGHT)
+    l(c.FISHKI[0])
+    l(c.FISHKI[1])
+    std::wcout << std::endl;
     return o;
 }
 
@@ -57,58 +51,33 @@ struct Plot
 };
 
 
-template<typename T>
-T& operator<<(T& o, const Plot& p)
-{          o << "{ " << p.x << ", " << p.y << " }";
+std::wostream& operator<<(std::wostream& o, const Plot& p)
+{   o << "{ " << p.x << ", " << p.y << " }";
     return o;
 }
 
 
-namespace stp
+namespace mss
 {
     ///-------------------------------------------------|
     /// Когда нужно понять кто первый сделал ход.       |
     ///-------------------------------------------------:
     const Plot START_STEP = {size_t(-111), size_t(-111)};
-    const Plot   NOT_INIT = {size_t(-1  ),         0   };
-    const Plot BAD_RETURN = {size_t(-112),         0   };
 }
 
 
 ///----------------------------------------------------------------------------|
 /// Поле.
 ///----------------------------------------------------------------------------:
-struct  Field   : std::vector<std::string>
-{       Field() : m(*this)
-        {
-            if(TYPE_IS_SERVER_OR_CLIENT && !config_load.get_config(cfg))
-            {
-                {   amount_fish_2_config = config_load.get_field(cfg, *this);
-                }
-            }
-            else
-            {   m = std::vector<std::string>
-                                    (cfg.HEIGHT, std::string(cfg.WIDTH, EMPTY));
-            }
-        }
+struct  Field
+{   Field() : m(nullptr)
+    {   create();
+    }
 
-    ConfigLoad config_load;
+    const char EMPTY = '.';
 
     size_t W = cfg.WIDTH ,
            H = cfg.HEIGHT;
-
-
-    size_t amount_fish_2_config = 0;
-
-
-    char who_step()
-    {   return amount_fish_2_config % 2 == 0 ? cfg.FISHKI[0] : cfg.FISHKI[1];
-    }
-
-
-    void set_FISHKA(const Plot& p, char fishka)
-    {   m[p.y][p.x] = fishka;
-    }
 
     ///---------------------------|
     /// Проверка фишки на выигрыш.|
@@ -134,21 +103,15 @@ struct  Field   : std::vector<std::string>
         return false;
     }
 
-    void fclear()
-    {
-        if(TYPE_IS_SERVER_OR_CLIENT)
-        {
-            m = config_load.get_data();
+    char* operator[](const size_t i)
+    {   return  m[i];
+    }
 
-            if(0 != amount_fish_2_config)
-            {
-                /// ...
+    void clear()
+    {   for    (size_t h = 0; h < H; ++h)
+        {   for(size_t w = 0; w < W; ++w)
+            {   m[h][w] = EMPTY;
             }
-        }
-        else for(size_t h = 0; h < H; ++h)
-        {    for(size_t w = 0; w < W; ++w)
-             {   m[h][w] = EMPTY;
-             }
         }
     }
 
@@ -161,38 +124,36 @@ struct  Field   : std::vector<std::string>
         }
     }
 
-    void operator=(const std::vector<std::string>& _m){ m = _m; }
-
     void debug() const
     {   size_t cnt = 0;
-        myl::wcout << L" ... сначала горизонтали:\n";
+        std::wcout << L" ... сначала горизонтали:\n";
         for(const auto& s : get_all_str())
-        {   if(    H == cnt  ) myl::wcout << L" ... теперь вертикали:\n";
-            if(W + H == cnt++) myl::wcout << L" ... теперь диагонали:\n";
+        {   if(    H == cnt  ) std::wcout << L" ... теперь вертикали:\n";
+            if(W + H == cnt++) std::wcout << L" ... теперь диагонали:\n";
 
-            myl::wcout << s << '\n';
+            std::cout << s << '\n';
         }
-        myl::wcout      << '\n';
+        std::cout      << '\n';
     }
 
     bool verification(const Plot& p, const wchar_t* name) const
     {   bool b = p.x < W && p.y < H && m[p.y][p.x] == EMPTY;
         if (!b)
         {
-            if(p == stp::START_STEP)
+            if(p == mss::START_STEP)
             {   /// std::wcout << "mss::START_STEP" << endl;
             }
             else if(p.x >= W && p.y >= H)
-            {   myl::wcout << L"FAIL: Ход за пределами поля! "
-                           << name << myl::endl;
+            {   std::wcout << L"FAIL: Ход за пределами поля! "
+                           << name << std::endl;
                 l(p.x)
                 l(p.y)
                 l(W)
                 l(H)
             }
             else if(m[p.y][p.x] != EMPTY)
-            {   myl::wcout << L"FAIL: Ход на занятую клетку! "
-                           << name << myl::endl;
+            {   std::wcout << L"FAIL: Ход на занятую клетку! "
+                           << name << std::endl;
                 l(p.x)
                 l(p.y)
             }
@@ -205,8 +166,17 @@ struct  Field   : std::vector<std::string>
     }
 
 
-    std::vector<std::string>& m;
+private:
+    char** m;
 
+    void create()
+    {   if(nullptr !=  m)  return;
+
+        m = new char* [H];
+        for (size_t i = 0; i < H; i++)
+        {   m[i] = new char[W];
+        }
+    }
 
 #define TESTMODE false
     ///---------------------------|
@@ -283,8 +253,7 @@ public:
     static void testclass();
 };
 
-template<typename T>
-T& operator<<(T& o, Field& f)
+std::ostream& operator<<(std::ostream& o, Field& f)
 {
     std::string line(f.W+2, '-');
     o << line << '\n';
@@ -305,14 +274,14 @@ T& operator<<(T& o, Field& f)
 /// GHI
 ///------------------------------:
 void Field::testclass()
-{   TEST_START(Field);
-
+{   std::wcout << L"Тест:\n";
     Field f;
 
     f.fill_for_test();
     f.debug        ();
 
-    TEST_FINISHED;
+    std::wcout << "TEST FINSHED!\n";
+    std::cin.get();
 }
 
 #endif // COMMON_H
